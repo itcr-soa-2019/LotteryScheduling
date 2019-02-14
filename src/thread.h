@@ -5,13 +5,6 @@
 #include <signal.h>
 #include <math.h>
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <unistd.h>
-#include <sys/time.h>
-#include <time.h>
-
 #ifndef thread_h
 #define thread_h
 
