@@ -16,7 +16,27 @@ Integrantes: Fabiola Espinoza
 			 Esteban Leandro
 Proyecto 1: Lottery Scheduling */
 
-#include "thread.h"
+
+#include "jobs/jobs.h"
+#include "threads/thread.h"
+
+
+/**
+ * read from keyboard num ofthreads to create
+ */
+int readThreadsNum()
+{
+    int threadsNum;
+    printf("\nEnter threads to run:");
+    scanf("%d", &threadsNum);   
+
+    if (MAX_THREADS < threadsNum)
+    {
+        threadsNum = MAX_THREADS;
+    }
+
+    return threadsNum;
+}
 
 
 /**
@@ -24,26 +44,16 @@ Proyecto 1: Lottery Scheduling */
  */
 int main(int argc, char **argv)
 {
-    printf("Starting lottery scheduling program\n\n");
-    
-    printf("Initializing threads lists\n");
     initLists();
 
     int threadsNum = 0;
+    threadsNum = readThreadsNum();
 
-    printf("\nEnter threads to run:");
-    scanf("%d", &threadsNum);
-    
-    if (MAX_THREADS < threadsNum)
+    for (int i = 0; i < threadsNum; i++)
     {
-        threadsNum = MAX_THREADS;
-    }
-
-    // test thread creation
-    for (int i = 0; i < threadsNum; i++){
         printf("\n");
         createThread(calculateArcTangent);
-    }    
+    }
     
     return 0;
 }

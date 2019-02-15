@@ -4,8 +4,9 @@
 #include <stdlib.h>
 #include <setjmp.h>
 #include <signal.h>
-#include <math.h>
 #include <time.h>
+#include <math.h>
+
 
 // header definition
 #ifndef thread_h
@@ -13,16 +14,12 @@
 
 // constants definitions
 #define STACK_SIZE 4096
-#define TIME_QUANTUM 1 
-#define MAX_THREADS 5
+#define MAX_THREADS 10
 
-#ifdef __x86_64__
-typedef unsigned long address_t;
-#else
-typedef unsigned int address_t;
-#endif
 
 // structs and enums declarations
+typedef unsigned long address_t;
+
 typedef enum 
 {
    READY, 
@@ -71,22 +68,23 @@ typedef struct list_t
    unsigned int size;
 } list_t;
 
+
+
 // Creates a new thread with f() being its entry point. 
 // The function returns the created thread id (>= 0) or ‐1 to indicate failure.
-int createThread(void (*f) (void));
+int createThread(void (*function) (void));
 
 // add a specific thread to the thread list
-int appendThread(thread_t *t, list_t *l);
+int appendThread(thread_t *thread, list_t *list);
 
 // number of nodes
 unsigned int numNodes(list_t *threads);
 
+// check memory allocation
 void mallocCheck(void *pointer, int lineNumber);
 
 // initialize lists
 void initLists();
 
-// Function to calculate PI arc tangent
-void calculateArcTangent();
 
 #endif
