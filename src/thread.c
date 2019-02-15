@@ -44,7 +44,6 @@ int createThread(void (*f) (void))
         thread->status->total_wait_time = 0; 
         thread->status->avr_exec_time = 
         thread->status->avr_wait_time = -1;
-
         thread->status->priority = rand()%5 + 1; 
         
         printf("Thread id: %d with pri %d\n", thread->status->id, thread->status->priority);

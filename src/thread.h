@@ -14,7 +14,7 @@
 // constants definitions
 #define STACK_SIZE 4096
 #define TIME_QUANTUM 1 
-#define MAX_THREADS 2
+#define MAX_THREADS 5
 
 #ifdef __x86_64__
 typedef unsigned long address_t;
