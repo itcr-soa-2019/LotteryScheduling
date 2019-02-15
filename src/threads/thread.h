@@ -24,9 +24,6 @@ typedef enum
 {
    READY, 
    RUNNING, 
-   YIELDED, 
-   YIELDTOSLEEP, 
-   YIELDTOSUSPEND, 
    SUSPENDED, 
    SLEEPING, 
    FINISHED

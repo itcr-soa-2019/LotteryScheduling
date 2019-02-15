@@ -14,6 +14,7 @@ void calculateArcTangent(void)
 {    
     double param, result;
 
+    // infinity loop so threads dont stop
     while(1)
     {
         param = 1.0;

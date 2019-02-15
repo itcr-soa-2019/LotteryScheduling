@@ -35,7 +35,7 @@ int createThread(void (*function) (void))
         return -1;
     }
     
-    // allocate memory for thread, status and stack 
+    // memory for thread, status and stack 
     thread_t *thread = malloc(sizeof(thread_t));
     mallocCheck(thread, __LINE__);
     thread->status = malloc(sizeof(state_t));
@@ -67,7 +67,7 @@ int createThread(void (*function) (void))
     appendThread(thread, threads);
     appendThread(thread, readyQ);
     
-    printf("Thread succeeded created, id: %d\n", newId);
+    printf("Thread created, id: %d\n", newId);
     
     return newId++;
 }

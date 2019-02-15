@@ -22,7 +22,7 @@ Proyecto 1: Lottery Scheduling */
 
 
 /**
- * read from keyboard num ofthreads to create
+ * read from keyboard num of threads to create
  */
 int readThreadsNum()
 {
@@ -37,7 +37,6 @@ int readThreadsNum()
 
     return threadsNum;
 }
-
 
 /**
  * Main execution method
