@@ -29,10 +29,17 @@ int main(int argc, char **argv)
 {
     printf("Starting lottery scheduling program\n\n");
 
+    printf("Starting lottery scheduling program\n\n");
+    //scanf();
+
+    createThread(calculateArcTangent);
+    createThread(calculateArcTangent);
+    createThread(calculateArcTangent);
+
     // thread creation
-    createThread(calculateArcTangent);
-    createThread(calculateArcTangent);
-    createThread(calculateArcTangent);
+    //for (){
+        
+    //}
 
     return 0;
 }
