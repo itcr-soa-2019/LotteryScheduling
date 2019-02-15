@@ -1,18 +1,20 @@
+
 #include <malloc.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <setjmp.h>
 #include <signal.h>
 #include <math.h>
+#include <time.h>
 
 // header definition
 #ifndef thread_h
 #define thread_h
 
 // constants definitions
-#define MAX_THREADS 5
 #define STACK_SIZE 4096
 #define TIME_QUANTUM 1 
+#define MAX_THREADS 2
 
 #ifdef __x86_64__
 typedef unsigned long address_t;
@@ -74,12 +76,15 @@ typedef struct list_t
 int createThread(void (*f) (void));
 
 // add a specific thread to the thread list
-int appendThreadToList(thread_t *t, list_t *l);
+int appendThread(thread_t *t, list_t *l);
 
 // number of nodes
 unsigned int numNodes(list_t *threads);
 
 void mallocCheck(void *pointer, int lineNumber);
+
+// initialize lists
+void initLists();
 
 // Function to calculate PI arc tangent
 void calculateArcTangent();

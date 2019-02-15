@@ -18,9 +18,6 @@ Proyecto 1: Lottery Scheduling */
 
 #include "thread.h"
 
-// Constants values
-#define FIBER_STACK 1024*64
-
 
 /**
  * Main execution method
@@ -28,18 +25,25 @@ Proyecto 1: Lottery Scheduling */
 int main(int argc, char **argv)
 {
     printf("Starting lottery scheduling program\n\n");
+    
+    printf("Initializing threads lists\n");
+    initLists();
 
-    printf("Starting lottery scheduling program\n\n");
-    //scanf();
+    int threadsNum = 0;
 
-    createThread(calculateArcTangent);
-    createThread(calculateArcTangent);
-    createThread(calculateArcTangent);
+    printf("\nEnter threads to run:");
+    scanf("%d", &threadsNum);
+    
+    if (MAX_THREADS < threadsNum)
+    {
+        threadsNum = MAX_THREADS;
+    }
 
-    // thread creation
-    //for (){
-        
-    //}
-
+    // test thread creation
+    for (int i = 0; i < threadsNum; i++){
+        printf("\n");
+        createThread(calculateArcTangent);
+    }    
+    
     return 0;
 }
