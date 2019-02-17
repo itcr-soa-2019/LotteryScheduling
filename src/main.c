@@ -18,25 +18,9 @@ Proyecto 1: Lottery Scheduling */
 
 
 #include "jobs/jobs.h"
-#include "threads/thread.h"
+#include "execution/execution.h"
 
 
-/**
- * read from keyboard num of threads to create
- */
-int readThreadsNum()
-{
-    int threadsNum;
-    printf("\nEnter threads to run:");
-    scanf("%d", &threadsNum);   
-
-    if (MAX_THREADS < threadsNum)
-    {
-        threadsNum = MAX_THREADS;
-    }
-
-    return threadsNum;
-}
 
 /**
  * Main execution method
@@ -44,9 +28,9 @@ int readThreadsNum()
 int main(int argc, char **argv)
 {
     initLists();
-
+    struct execution exeInfo = InitializeExecution();
     int threadsNum = 0;
-    threadsNum = readThreadsNum();
+    threadsNum = exeInfo.numThreads;
 
     for (int i = 0; i < threadsNum; i++)
     {
