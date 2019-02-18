@@ -1,5 +1,5 @@
-#ifndef scheduler.h
-#define scheduler.h
+#ifndef scheduler_h
+#define scheduler_h
 
 typedef struct scheduler_t
 {

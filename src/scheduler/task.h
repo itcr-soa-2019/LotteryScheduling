@@ -11,7 +11,7 @@ typedef struct task_t
 
 typedef struct task_node_t
 {
-   task_t *thread;
+   task_t *task;
    struct task_node_t *next;
    struct task_node_t *prev;
 } task_node_t;
