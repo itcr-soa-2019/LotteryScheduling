@@ -29,7 +29,7 @@ address_t translate_address(address_t address)
 }
 
 // create a new thread and return the pid
-int createThread(void (*function) (void))
+int createThread(void (*function) (thread_t))
 {
     if ( ! ( numNodes(threads) < MAX_THREADS ) ) {
         return -1;
