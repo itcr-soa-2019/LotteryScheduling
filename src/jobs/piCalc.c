@@ -1,5 +1,5 @@
 /**
- * PI Calculation 
+ * PI Calculation
  * Using Leibniz formula
  * Since PI = 4 * arctan(1).
  */
@@ -14,7 +14,7 @@ void piCalculation(thread_t *thread) {
     printf("ID: %d",id);
     for(long i = (10 * id)/numThreads; i < (10*(id + 1))/numThreads;  i++)
     {
-         printf("Index: %d",i);
+         printf("Index: %ld",i);
          printf("TERM %f", term);
          double partialN =  term * ((double)i - 0.5);
          printf("X: %f\n",partialN);
