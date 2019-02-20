@@ -18,10 +18,7 @@ void piCalculation(thread_t *thread) {
     for(long i = 0; i < workUnits;  i++)
     {
          calculateWorkUnit((i*TermsPerUnit)+startPoint, &partialSum);
-         printf("Terminos %f\n",partialSum);
-
     }
-    printf("SP %f\n",partialSum);
     partialValues[id]=partialSum;
 }
 
@@ -34,7 +31,6 @@ void calculateWorkUnit(int startIndex, double *partialSum) {
     for(int i = startIndex; i < (startIndex + TermsPerUnit); i++){        
         double v = pow(-1.0, (double) (i)) / (2.0*(double)(i)+1.0);
         *partialSum += v;
-        printf("Partial %d\n %f\n",i, v);
     }
 }
 
