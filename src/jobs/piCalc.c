@@ -1,6 +1,6 @@
 /**
  * PI Calculation
- * Using Nilakantha's Series
+ * Using Leibniz's Series
  */
 
 #include "piCalc.h"
