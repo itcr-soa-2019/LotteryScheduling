@@ -11,3 +11,4 @@ double term;
  * Function to calculate PI terms
  */
 void piCalculation(thread_t *thread);
+void calculateWorkUnit(int startIndex, double *partialSum);

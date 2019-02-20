@@ -32,8 +32,6 @@ int main(int argc, char **argv)
     threadsNum = exeInfo.numThreads;
     numThreads = threadsNum;
     partialValues = calloc(sizeof(double),numThreads);
-    term = 1.0/(double)threadsNum;
-
     for (int i = 0; i < threadsNum; i++)
     {
         thread_t *thread = malloc(sizeof(thread_t));
@@ -48,7 +46,7 @@ int main(int argc, char **argv)
         calculated_pi += partialValues[x];
         printf("%f\n",partialValues[x]);
     }
-    printf("PI:%f\n", term * calculated_pi);
+    printf("PI:%f\n", (double)calculated_pi * 4.0);
     
     
     return 0;
