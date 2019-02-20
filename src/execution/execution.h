@@ -1,5 +1,13 @@
-#include <stdio.h>
 #include "../threads/thread.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h> 
+
+
+#define DELIM "="
+#define MAXBUF 1024
+#define FILENAME "execution.conf"
+
 
 /**
  * The expected operation modes:
