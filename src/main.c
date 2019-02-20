@@ -19,8 +19,7 @@ Proyecto 1: Lottery Scheduling */
  
 #include "jobs/jobs.h"
 #include "execution/execution.h"
-
-
+#include "jobs/piCalc.h"
 
 /**
  * Main execution method
@@ -32,17 +31,29 @@ int main(int argc, char **argv)
     struct execution exeInfo = InitializeExecution();
     int threadsNum = 0;
     threadsNum = exeInfo.numThreads;
-	
+    numThreads = threadsNum;
+    partialValues = calloc(sizeof(double),numThreads);
     for (int i = 0; i < threadsNum; i++)
     {
-        createThread(calculateArcTangent);
+        thread_t *thread = malloc(sizeof(thread_t));
+        thread-> id = i;
+        printf("\n");
+        // createThread(calculateArcTangent);
+        piCalculation(thread);
     }
-	
+    calculated_pi = 0;
+    for(int x= 0; x< threadsNum; x++)
+    {
+        calculated_pi += partialValues[x];
+        printf("%f\n",partialValues[x]);
+    }
+    printf("PI:%f\n", (double)calculated_pi * 4.0);
+    
     printf("\nOperationMode: %d\n", exeInfo.operationMode);
 	printf("NumThreads: %d\n", exeInfo.numThreads);
 	printf("NumTickets: %d\n", exeInfo.tickets);
 	printf("WorkUnits: %d\n", exeInfo.workUnits);
 	printf("QuantumSize: %d\n", exeInfo.quantumSize);
-
+	
     return 0;
 }
