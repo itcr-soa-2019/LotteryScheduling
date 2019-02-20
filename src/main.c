@@ -16,7 +16,7 @@ Integrantes: Fabiola Espinoza
 			 Esteban Leandro
 Proyecto 1: Lottery Scheduling */
 
-
+ 
 #include "jobs/jobs.h"
 #include "execution/execution.h"
 
@@ -26,17 +26,23 @@ Proyecto 1: Lottery Scheduling */
  * Main execution method
  */
 int main(int argc, char **argv)
-{
-    initLists();
+{        
+    initLists();    
+
     struct execution exeInfo = InitializeExecution();
     int threadsNum = 0;
     threadsNum = exeInfo.numThreads;
-
+	
     for (int i = 0; i < threadsNum; i++)
     {
-        printf("\n");
         createThread(calculateArcTangent);
     }
-    
+	
+    printf("\nOperationMode: %d\n", exeInfo.operationMode);
+	printf("NumThreads: %d\n", exeInfo.numThreads);
+	printf("NumTickets: %d\n", exeInfo.tickets);
+	printf("WorkUnits: %d\n", exeInfo.workUnits);
+	printf("QuantumSize: %d\n", exeInfo.quantumSize);
+
     return 0;
 }
