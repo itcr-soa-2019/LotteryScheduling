@@ -1,27 +1,36 @@
 /**
  * PI Calculation
- * Using Leibniz formula
- * Since PI = 4 * arctan(1).
+ * Using Nilakantha's Series
  */
 
 #include "piCalc.h"
+#define TermsPerUnit 50
+
 /**
  * Function to calculate PI terms
  */
 void piCalculation(thread_t *thread) {
     double partialSum = 0;
+    double lastValue = 0;
     int id = thread->id;
-    printf("ID: %d",id);
-    for(long i = (10 * id)/numThreads; i < (10*(id + 1))/numThreads;  i++)
+    int workUnits = 100;
+    double startPoint = id * workUnits * TermsPerUnit;
+    for(long i = 0; i < workUnits;  i++)
     {
-         printf("Index: %ld",i);
-         printf("TERM %f", term);
-         double partialN =  term * ((double)i - 0.5);
-         printf("X: %f\n",partialN);
-         partialSum += 4.0 / (1.0 + partialN*partialN);
+         calculateWorkUnit((i*TermsPerUnit)+startPoint, &partialSum);
     }
-    printf("SP %f\n",partialSum);
-
     partialValues[id]=partialSum;
+}
+
+/**
+ * Calculates a single workUnit.
+ * A Work unit is equivalent to 50 terms of the 
+ * geometric series.
+ */
+void calculateWorkUnit(int startIndex, double *partialSum) {
+    for(int i = startIndex; i < (startIndex + TermsPerUnit); i++){        
+        double v = pow(-1.0, (double) (i)) / (2.0*(double)(i)+1.0);
+        *partialSum += v;
+    }
 }
 
