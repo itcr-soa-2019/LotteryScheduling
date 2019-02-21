@@ -29,7 +29,7 @@ address_t translate_address(address_t address)
 }
 
 // create a new thread and return the pid
-int createThread(void (*function) (thread_t))
+int createThread(void *function)
 {
     if ( ! ( numNodes(threads) < MAX_THREADS ) ) {
         return -1;
@@ -72,6 +72,17 @@ int createThread(void (*function) (thread_t))
     return newId++;
 }
 
+/**
+ * Saves the thread execution context
+ */
+int saveThread(thread_t* thread) {
+    return sigsetjmp(thread->jmpbuf, 1);
+}
+
+// Resumes thread
+void Resume_Thread(thread_t* thread) {
+    siglongjmp(thread->jmpbuf, 1);
+}
 // evaluates if the thread and list are not null 
 // in order to make succesfull apend on list
 int evalThreadAppend(thread_t *thread, list_t *list)

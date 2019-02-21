@@ -6,6 +6,7 @@ typedef struct task_t
    int tickets;
    int workUnits;
    int quantumSize; // millisecs if expropiative mode or work % if nonexpropiative mode
+   double progress; // Indicates the current progress value of this task
    thread_t *thread;
 } task_t;
 
