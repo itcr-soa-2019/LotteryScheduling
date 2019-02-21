@@ -36,10 +36,13 @@ int main(int argc, char **argv)
     for (int i = 0; i < threadsNum; i++)
     {
         thread_t *thread = malloc(sizeof(thread_t));
+        task_t *task = malloc(sizeof(task_t));
         thread-> id = i;
+        task->thread = thread;
+        task->workUnits = 4;
         printf("\n");
         // createThread(calculateArcTangent);
-        piCalculation(thread);
+        piCalculation(task);
     }
     calculated_pi = 0;
     for(int x= 0; x< threadsNum; x++)

@@ -1,14 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "../threads/thread.h"
-
-double series;
+#include "../scheduler/task.h"
 volatile double calculated_pi;
 int numThreads;
 double* partialValues;
-double term;
+#define TermsPerUnit 50
 /**
  * Function to calculate PI terms
  */
-void piCalculation(thread_t *thread);
+void piCalculation(task_t *task);
 void calculateWorkUnit(int startIndex, double *partialSum);

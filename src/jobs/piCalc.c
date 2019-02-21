@@ -3,21 +3,21 @@
  * Using Leibniz's Series
  */
 
-#include "piCalc.h"
-#define TermsPerUnit 50
 
+#include "piCalc.h"
 /**
  * Function to calculate PI terms
  */
-void piCalculation(thread_t *thread) {
+void piCalculation(task_t *task) {
     double partialSum = 0;
     double lastValue = 0;
-    int id = thread->id;
-    int workUnits = 100;
+    int id = task->thread->id;
+    int workUnits = task->workUnits;
     double startPoint = id * workUnits * TermsPerUnit;
     for(long i = 0; i < workUnits;  i++)
     {
          calculateWorkUnit((i*TermsPerUnit)+startPoint, &partialSum);
+         //task->progress = (double)i + 1.0 / (double) workUnits; // Calculates the current progress for this task
     }
     partialValues[id]=partialSum;
 }
