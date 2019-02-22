@@ -21,11 +21,13 @@ Proyecto 1: Lottery Scheduling */
 #include "execution/execution.h"
 #include "jobs/piCalc.h"
 
+
+
 /**
  * Main execution method
  */
 int main(int argc, char **argv)
-{        
+{   
     initLists();    
 
     struct execution exeInfo = InitializeExecution();
@@ -40,7 +42,6 @@ int main(int argc, char **argv)
         thread-> id = i;
         task->thread = thread;
         task->workUnits = 4;
-        printf("\n");
         // createThread(calculateArcTangent);
         piCalculation(task);
     }
@@ -52,11 +53,8 @@ int main(int argc, char **argv)
     }
     printf("PI:%f\n", (double)calculated_pi * 4.0);
     
-    printf("\nOperationMode: %d\n", exeInfo.operationMode);
-	printf("NumThreads: %d\n", exeInfo.numThreads);
-	printf("NumTickets: %d\n", exeInfo.tickets);
-	printf("WorkUnits: %d\n", exeInfo.workUnits);
-	printf("QuantumSize: %d\n", exeInfo.quantumSize);
-	
+    // print execution 
+    printExecution();
+
     return 0;
 }

@@ -2,12 +2,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h> 
-
+#include <time.h>
 
 #define DELIM "="
+#define DELIM_LIST ","
 #define MAXBUF 1024
 #define FILENAME "execution.conf"
 
+struct execution executor;
 
 /**
  * The expected operation modes:
@@ -22,10 +24,12 @@ enum OperationMode {
 struct execution
 {
     int operationMode;
-    int numThreads;
-    int tickets;
-    int workUnits;
-    int quantumSize;
+    long numThreads;
+    long* tickets;
+    long* workUnits;
+    unsigned int quantumSize;
+    double cpuYieldPercentage;
 };
 
+void printExecution();
 struct execution InitializeExecution();
