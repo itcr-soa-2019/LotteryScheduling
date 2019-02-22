@@ -47,9 +47,10 @@ typedef struct thread_t
 {
    int id;
    char *stack;
-   address_t sp;
-   address_t pc;
    state_t *status;
+   long tickets;
+   long workUnits;
+   double cpuYieldPercentage;
    sigjmp_buf jmpbuf;
 } thread_t;
 
@@ -69,7 +70,7 @@ typedef struct list_t
 
 // Creates a new thread with f() being its entry point. 
 // The function returns the created thread id (>= 0) or ‐1 to indicate failure.
-int createThread(void *function);
+thread_t* createThread(void *function, long tickets, long workUnits, long cpuYield);
 
 // Saves the thread execution context
 int saveThread(thread_t* thread);

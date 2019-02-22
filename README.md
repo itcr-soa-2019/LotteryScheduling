@@ -4,7 +4,7 @@ Proyecto 1: "Lottery Scheduling"
 Dentro de la carpeta 'src' se puede utilizar el siguiente comando para compilar y
 ejecutar desde terminal:
 
-  - gcc jobs/jobs.c threads/thread.c execution/execution.c main.c -o main -lm
+  - gcc jobs/jobs.c jobs/piCalc.c threads/thread.c execution/execution.c lottery/lottery.c main.c -o main -lm
   - ./main
 
 Se le pide al usuario en la terminal si desea ejecutar desde archivo de configuracion o desde el teclado.
