@@ -7,7 +7,6 @@
 #include <time.h>
 #include <math.h>
 
-
 // header definition
 #ifndef thread_h
 #define thread_h
@@ -15,7 +14,8 @@
 // constants definitions
 #define STACK_SIZE 4096
 #define MAX_THREADS 10
-
+#define MAX_TICKETS 5
+#define MAX_WORK_UNITS 50
 
 // structs and enums declarations
 typedef unsigned long address_t;
@@ -67,13 +67,11 @@ typedef struct list_t
 } list_t;
 
 
-
 // Creates a new thread with f() being its entry point. 
 // The function returns the created thread id (>= 0) or ‐1 to indicate failure.
 int createThread(void *function);
-/**
- * Saves the thread execution context
- */
+
+// Saves the thread execution context
 int saveThread(thread_t* thread);
 
 // Resumes thread
@@ -90,6 +88,5 @@ void mallocCheck(void *pointer, int lineNumber);
 
 // initialize lists
 void initLists();
-
 
 #endif

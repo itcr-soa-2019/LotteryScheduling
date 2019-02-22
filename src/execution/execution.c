@@ -1,20 +1,28 @@
 #include "execution.h"
 
 
+// file settings configuration
+const char *OPERATION_MODE = "operationMode";
+const char *NUMBER_THREADS = "numThreads";
+const char *TICKETS_THREAD = "tickets";
+const char *WORK_THREAD = "workUnits";
+const char *QUANTUM_SIZE = "quantumSize";
+const char *YIELD_CPU = "cpuYieldPercentage";
+
+// randomize tickets and work units
+time_t timer; 
+
+
 /**
  * read from keyboard num of threads to create
  */
-int readThreadsNum()
-{
+int readThreadsNum() {
     int threadsNum;
-    printf("\nEnter threads to run: ");
-    scanf("%d", &threadsNum);   
-
-    if (MAX_THREADS < threadsNum)
-    {
+    printf("Enter threads to run: ");
+    scanf("%d", &threadsNum);
+    if (MAX_THREADS < threadsNum) {
         threadsNum = MAX_THREADS;
     }
-
     return threadsNum;
 }
 
@@ -22,55 +30,107 @@ int readThreadsNum()
  * Read from keyboard the thread initial configuration 
  */
 struct execution readFromKeyboard(){
-    struct execution exInfo;
-    printf("Enter Operation Mode: \n [1]: Expropiative [2]: NonExpropiative: ");
-    scanf("%d", &exInfo.operationMode);
-    exInfo.numThreads = readThreadsNum();
-    printf("Enter Amount of tickets per thread: ");
-    scanf("%d", &exInfo.tickets);
-    printf("Enter Amount of work units per thread: ");
-    scanf("%d", &exInfo.workUnits);
-    printf("Enter quantum size: ");
-    scanf("%d", &exInfo.quantumSize);
-    return exInfo;
+    int i;        
+    srand((unsigned) time(&timer));
+    
+    printf("Enter Operation Mode: \n[1] Expropiative [2] NonExpropiative: ");
+    scanf("%d", &executor.operationMode);
+    executor.numThreads = readThreadsNum();
+    executor.tickets = (long*) malloc(executor.numThreads * sizeof(long));
+    executor.workUnits = (long*) malloc(executor.numThreads * sizeof(long));
+    
+    printf("Tickets will be assigned randomly\n");
+    for(i = 0; i < executor.numThreads; i++) 
+    {
+        executor.tickets[i] = rand() % MAX_TICKETS;
+    }
+    printf("Work units will be assigned randomly\n");
+    for(i = 0; i < executor.numThreads; i++) 
+    {
+        executor.workUnits[i] = rand() % MAX_WORK_UNITS;
+    }
+    
+    printf("Enter quantum size: \n");
+    scanf("%d", &executor.quantumSize);    
+    return executor;
 }
 
 /**
- * Read from file the thread initial configuration
+ * Read from configuration file
  */
-struct execution readFromFile(char *filename)
-{
-	struct execution exec;
+struct execution readFromFile(char *filename) {	
 	FILE *file = fopen (filename, "r");
 
-	if (file != NULL)
-	{
+	if (file != NULL) {
 		char line[MAXBUF];
-		int i = 0, value = 0;
 
-		while(fgets(line, sizeof(line), file) != NULL)
-		{
-			char *cfline;
-			cfline = strstr((char *)line, DELIM);
-			cfline = cfline + strlen(DELIM);            
-            value = atoi(cfline);
+		while(fgets(line, sizeof(line), file) != NULL) {
+            char *attLine = strtok(line, DELIM);
+            char *valLine = strtok(NULL, DELIM);
 
-			if (i == 0){
-                exec.operationMode = value;
-			} else if (i == 1){
-                exec.numThreads = value;
-			} else if (i == 2){
-				exec.tickets = value;
-			} else if (i == 3){
-                exec.workUnits = value;
-			} else if (i == 4){
-                exec.quantumSize = value;
-			}
-			i++;
+            if (strcmp(attLine, OPERATION_MODE) == 0) {
+                executor.operationMode = atoi(valLine);
+            } else if (strcmp(attLine, NUMBER_THREADS) == 0) {
+                executor.numThreads = atoi(valLine);
+                executor.tickets = (long*) malloc(executor.numThreads * sizeof(long));
+                executor.workUnits = (long*) malloc(executor.numThreads * sizeof(long));
+            } else if (strcmp(attLine, TICKETS_THREAD) == 0) {
+                char *t_tickets = strtok(valLine, DELIM_LIST);
+                int i = 0;
+                while(t_tickets != NULL && i < executor.numThreads)
+                {
+                    executor.tickets[i] = strtol(t_tickets, (char **)NULL, 10);
+                    t_tickets = strtok(NULL, DELIM_LIST);
+                    i++;
+                }
+            } else if (strcmp(attLine, WORK_THREAD) == 0) {
+                char *t_workUnits = strtok(valLine, DELIM_LIST);
+                int i = 0;
+                while(t_workUnits != NULL && i < executor.numThreads)
+                {
+                    executor.workUnits[i] = strtol(valLine, (char **)NULL, 10);
+                    t_workUnits = strtok(NULL, DELIM_LIST);
+                    i++;
+                }
+            } else if (strcmp(attLine, QUANTUM_SIZE) == 0) {
+                executor.quantumSize = atoi(valLine);
+            } else if (strcmp(attLine, YIELD_CPU) == 0) {                
+                executor.cpuYieldPercentage = strtod(valLine, NULL);
+            } else {                
+                printf("Invalid execution setting: %s with line %s\n", attLine, line);
+            }
 		}
 		fclose(file);
 	}
-	return exec;
+	return executor;
+}
+
+/**
+ * Print the execution struct
+ */
+void printExecution() {
+    int i = 0;
+    printf("\n**********************************\n");
+    printf("Operation Mode: %d\n", executor.operationMode);
+    printf("----------------------------------\n");
+	printf("Num Threads: %ld\n", executor.numThreads);
+    printf("----------------------------------\n");
+    printf("Tickets distribution: \n");    
+    for(i = 0; i < executor.numThreads; i++)
+    {
+        printf("Thread %d: %ld \n", i+1, executor.tickets[i]);
+    }
+    printf("----------------------------------\n");
+    printf("Work distribution: \n");
+    for(i = 0; i < executor.numThreads; i++)
+    {
+        printf("Thread %d: %ld \n", i+1, executor.workUnits[i]);
+    }
+    printf("----------------------------------\n");
+	printf("Quantum Size: %d\n", executor.quantumSize);
+    printf("----------------------------------\n");
+    printf("CPU Percentage: %lf\n", executor.cpuYieldPercentage);
+	printf("**********************************\n");
 }
 
 /**
@@ -78,23 +138,20 @@ struct execution readFromFile(char *filename)
  * configuration file or from the GTK GUI (temp keyboard)
  */
 struct execution InitializeExecution(){
-    struct execution exInfo;
-    
-    int mode;    
-    printf("Initialize Lottery: \n [1]: Keyboard [2] Config File: ");
+    int mode;
+    printf("Initialize Lottery: \n[1] Keyboard [2] Config File: ");
     scanf("%d", &mode);
     switch (mode)
     {
         case 1:
-            exInfo = readFromKeyboard();
+            executor = readFromKeyboard();
             break;
         case 2:
-            exInfo = readFromFile(FILENAME);
-            break;    
+            executor = readFromFile(FILENAME);
+            break;
         default:
             printf("Not a valid execution mode, try again. \n");
             break;
     }
-
-    return exInfo;
+    return executor;
 }
