@@ -20,18 +20,20 @@ address_t translate_address(address_t address) {
 }
 
 // create a new thread and return the pid
-int createThread(void *function) {
+thread_t* createThread(void *function, long tickets, long workUnits, long cpuYield) {
     if ( ! ( numNodes(threads) < MAX_THREADS ) ) {
-        return -1;
+        return NULL;
     }
     
-    // memory for thread, status and stack 
     thread_t *thread = malloc(sizeof(thread_t));
-    mallocCheck(thread, __LINE__);
     thread->status = malloc(sizeof(state_t));
-    mallocCheck(thread->status, __LINE__);
     thread->stack = malloc(STACK_SIZE);
-    mallocCheck(thread->stack, __LINE__);
+    address_t sp, pc;
+
+    thread->id = newId++;    
+    thread->tickets = tickets;
+    thread->workUnits = workUnits;
+    thread->cpuYieldPercentage = cpuYield;
     thread->status->id = newId;    
     thread->status->num_runs = 
     thread->status->total_exec_time = 
@@ -43,18 +45,16 @@ int createThread(void *function) {
     thread->status->awake_after = -1;
     thread->status->threadState = READY;
     
-    // setjmp jmpbuf
-    thread->sp = (address_t) thread->stack + STACK_SIZE - sizeof(address_t);
-    thread->pc = (address_t) function;    
+    sp = (address_t) thread->stack + STACK_SIZE - sizeof(address_t);
+    pc = (address_t) function;    
+
     sigsetjmp(thread->jmpbuf, 1);
-    (thread->jmpbuf->__jmpbuf)[JB_SP] = translate_address(thread->sp);
-    (thread->jmpbuf->__jmpbuf)[JB_PC] = translate_address(thread->pc);    
+    (thread->jmpbuf->__jmpbuf)[JB_SP] = translate_address(sp);
+    (thread->jmpbuf->__jmpbuf)[JB_PC] = translate_address(pc);    
     sigemptyset(&thread->jmpbuf->__saved_mask);
     
-    appendThread(thread, threads);
-    
-    printf("Thread created, id: %d\n", newId);    
-    return newId++;
+    printf("Thread created, id: %d\n", newId);
+    return thread;
 }
 
 
@@ -91,7 +91,6 @@ int appendThread(thread_t *thread, list_t *list) {
 
     node_t *node = list->head;
     node_t *new = malloc(sizeof(node_t));
-    mallocCheck(new, __LINE__);    
     new->thread = thread;
     new->next = new->prev = NULL;
     
@@ -117,18 +116,10 @@ unsigned int numNodes(list_t *threads) {
     return threads->size;
 }
 
-// check if memory allocation is null
-void mallocCheck(void *pointer, int lineNumber) {
-    if(NULL != pointer) return;
-
-    printf("malloc returned NULL at line %d in \"%s\"", lineNumber, __FILE__);
-    abort();
-}
 
 // initialize temporal list to store threads
 void initLists() {
-    threads = malloc(sizeof(list_t));
-    mallocCheck(threads, __LINE__);
+    threads = malloc(sizeof(list_t));    
     threads->head = NULL;
     threads->size = 0;
     srand(time(NULL));
