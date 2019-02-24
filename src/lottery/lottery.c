@@ -1,5 +1,4 @@
 #include "lottery.h"
-
 // init lottery scheduling
 void initLotterySchedule(void *function)
 {        
@@ -22,4 +21,15 @@ void initLotterySchedule(void *function)
 void startLotterySchedule()
 {
 
+}
+
+// Returns the current task defined by the scheduler
+task_t * getCurrentTask() {
+    return getTaskAt(currentIndex) ;
+}
+
+// Starts the threads work using the current task 
+void runThread() {
+    task_t* currentTask =  getCurrentTask(scheduler);
+    piCalculation(currentTask);
 }

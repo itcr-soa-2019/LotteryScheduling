@@ -42,4 +42,22 @@ int appendTask(task_t *task, task_list_t *list) {
     return 0;
 }
 
+task_t * getTaskAt(int index) {
+    
+    struct task_t* current = global_task_list->head; 
+      
+     // the index of the  
+     // node we're currently 
+     // looking at 
+    int count = 0; 
+    while (current != NULL) 
+    { 
+        if (count == index) 
+            return(current); 
+        count++; 
+        current = current->next; 
+    } 
+    return NULL;
+}
+
 //todo: add method to deallocate memory --> free(pointer)

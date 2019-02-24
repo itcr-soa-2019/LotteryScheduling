@@ -57,6 +57,6 @@ int main(int argc, char **argv)
     initLists();    
     piCalcTester();
     printExecution();
-    initLotterySchedule(piCalculation);
+    initLotterySchedule(runThread);
     return 0;
 }
