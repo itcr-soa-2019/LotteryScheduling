@@ -5,6 +5,7 @@
 
 typedef struct task_t
 {
+   int id;
    int tickets;
    int workUnits;
    int quantumSize; // millisecs if expropiative mode or work % if nonexpropiative mode
@@ -17,22 +18,36 @@ typedef struct task_list_t
 {
    task_t *head;
    task_t *last;
+   unsigned int size;
 } task_list_t;
 
 // initialize task element
-task_t* initTask(int tickets, int workUnits, int quantumSize, double progress, thread_t *thread);
+task_t* initTask(int id, int tickets, int workUnits, int quantumSize, double progress, thread_t *thread);
 
-// initialize local list of tasks
+// execute pi calculation
+void executeTask(task_t *task);
+
+// stop task execution
+void stopTask(task_t *task);
+
+// initialize new list of tasks
 task_list_t* initTaskList();
 
-// add new element to the local tasks list
+// add new element to existing list of tasks
 int appendTask(task_t *task, task_list_t *list);
 
+// remove task from list
+int removeTask(task_t *task, task_list_t *list);
+
+// get task item in list by index
+task_t* getTaskByIndex(int index, task_list_t *list);
+
 //Global access to the array of tasks variable
-volatile task_list_t * global_task_list;
+//ToDo: check if we really need this
+volatile task_list_t * global_task_list; 
 
 // Return the task at nth index
+//ToDo: check if we really need this
 task_t * getTaskAt(int index) ;
-
 
 #endif
