@@ -60,14 +60,11 @@ struct execution readFromKeyboard(){
  */
 struct execution readFromFile(char *filename) {	
 	FILE *file = fopen (filename, "r");
-
 	if (file != NULL) {
 		char line[MAXBUF];
-
 		while(fgets(line, sizeof(line), file) != NULL) {
             char *attLine = strtok(line, DELIM);
             char *valLine = strtok(NULL, DELIM);
-
             if (strcmp(attLine, OPERATION_MODE) == 0) {
                 executor.operationMode = atoi(valLine);
             } else if (strcmp(attLine, NUMBER_THREADS) == 0) {
