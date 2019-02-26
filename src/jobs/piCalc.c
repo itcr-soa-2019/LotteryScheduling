@@ -8,16 +8,18 @@
 /**
  * Function to calculate PI terms
  */
-void piCalculation(task_t *task) {
+void piCalculation(task_t *task, void (*reportProgress)(double)) {
     double partialSum = 0;
     double lastValue = 0;
     int id = task->thread->id;
     int workUnits = task->workUnits;
     double startPoint = id * workUnits * TermsPerUnit;
-    for(long i = 0; i < workUnits;  i++)
+    for(int i = 0; i < workUnits;  i++)
     {
          calculateWorkUnit((i*TermsPerUnit)+startPoint, &partialSum);
-         task->progress = (double)i + 1.0 / (double) workUnits; // Calculates the current progress for this task
+         double progress = ((double)i + 1.0) / (double) workUnits; // Calculates the current progress for this task
+         task->progress = progress;
+         reportProgress(progress);
     }
     partialValues[id]=partialSum;
 }

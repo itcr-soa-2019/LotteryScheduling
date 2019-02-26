@@ -42,12 +42,8 @@ int removeTask(task_t *task, task_list_t *list);
 // get task item in list by index
 task_t* getTaskByIndex(int index, task_list_t *list);
 
-//Global access to the array of tasks variable
-//ToDo: check if we really need this
-volatile task_list_t * global_task_list; 
-
 // Return the task at nth index
 //ToDo: check if we really need this
-task_t * getTaskAt(int index) ;
+task_t * getTaskAt(task_list_t *task_list, int index) ;
 
 #endif

@@ -110,9 +110,9 @@ task_t* getTaskByIndex(int index, task_list_t *list) {
 }
 
 //ToDo: check if we really need this
-task_t * getTaskAt(int index) {
+task_t * getTaskAt(task_list_t *task_list, int index) {
     
-    struct task_t* current = global_task_list->head; 
+    struct task_t* current = task_list->head; 
       
      // the index of the  
      // node we're currently 

@@ -21,6 +21,9 @@ Proyecto 1: Lottery Scheduling */
 #include "lottery/lottery.h"
 #include "jobs/piCalc.h"
 
+void stub_reporter(double p){
+    printf("Thread progress %f \n", p);
+}
 
 /**
  *  Tester method for Pi calculation
@@ -38,7 +41,7 @@ void piCalcTester(){
         thread-> id = i;
         task->thread = thread;
         task->workUnits = 4;
-        piCalculation(task);
+        piCalculation(task, stub_reporter);
     }
     calculated_pi = 0;
     for(int x= 0; x< threadsNum; x++)

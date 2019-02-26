@@ -69,3 +69,23 @@ void startScheduling(scheduler_t* scheduler) {
     }
 
 }
+
+
+// Returns the current task defined by the scheduler
+task_t * getCurrentTask() {
+    return getTaskAt(scheduler->taskList, currentIndex) ;
+}
+
+// This should be used in the non expropiative mode
+void verifyCurrentThreadProgress(double progress){
+
+}
+
+// Starts the threads work using the current task 
+/**
+ * This is required to give the thread all the required context
+ * */
+void runThread() {
+    task_t* currentTask =  getCurrentTask(scheduler);
+    piCalculation(currentTask, verifyCurrentThreadProgress);
+}
