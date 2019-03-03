@@ -42,8 +42,4 @@ int removeTask(task_t *task, task_list_t *list);
 // get task item in list by index
 task_t* getTaskByIndex(int index, task_list_t *list);
 
-// Return the task at nth index
-//ToDo: check if we really need this
-task_t * getTaskAt(task_list_t *task_list, int index) ;
-
 #endif

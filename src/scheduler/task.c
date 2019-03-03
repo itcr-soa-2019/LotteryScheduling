@@ -1,3 +1,4 @@
+#include "../jobs/piCalc.h"
 #include "task.h"
 
 task_t* initTask(int id, int tickets, int workUnits, int quantumSize,  double progress, thread_t *thread) {
@@ -13,6 +14,19 @@ task_t* initTask(int id, int tickets, int workUnits, int quantumSize,  double pr
     return task;
 }
 
+// This should be used in the non expropiative mode
+void verifyCurrentThreadProgress(double progress){
+
+}
+
+void executeTask(task_t *task) {
+    piCalculation(task, verifyCurrentThreadProgress);
+}
+
+void stopTask(task_t *task) {
+    // stop pi calculation, update progress and workunits left for this task
+}
+
 task_list_t* initTaskList() {
     task_list_t* taskList = malloc(sizeof(task_list_t));    
 
@@ -25,14 +39,6 @@ task_list_t* initTaskList() {
     taskList->size = 0;
 
     return taskList;
-}
-
-void executeTask(task_t *task) {
-    // call pi calculation here with the thread of this task
-}
-
-void stopTask(task_t *task) {
-    // stop pi calculation, update progress and workunits left for this task
 }
 
 int appendTask(task_t *task, task_list_t *list) {
@@ -109,21 +115,3 @@ task_t* getTaskByIndex(int index, task_list_t *list) {
     return NULL;
 }
 
-//ToDo: check if we really need this
-task_t * getTaskAt(task_list_t *task_list, int index) {
-    
-    struct task_t* current = task_list->head; 
-      
-     // the index of the  
-     // node we're currently 
-     // looking at 
-    int count = 0; 
-    while (current != NULL) 
-    { 
-        if (count == index) 
-            return(current); 
-        count++; 
-        current = current->next; 
-    } 
-    return NULL;
-}

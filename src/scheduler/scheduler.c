@@ -10,33 +10,31 @@ task_t* getWinnerTask(task_list_t *taskList, int winnerTicket) {
         return NULL;
     }
 
+    task_t* task = taskList->head;
     int ticketSum = 0;
-    task_t* currentTask;
 
-    for (int i = 0; i < taskList->size; i++) {
-        currentTask = getTaskByIndex(i, taskList);
-        ticketSum += currentTask->tickets;
+    while (task != NULL)
+    {
+        ticketSum += task->tickets;
         if(ticketSum >= winnerTicket) {
-            return currentTask;
+            return task;
         }
+        task = task->next;
     }
     printf("Not found winner task with ticket %d", winnerTicket);
     return NULL;
 }
 
-scheduler_t* initScheduler(int operationMode, int totalTickets, task_list_t *taskList) {
-    scheduler_t* scheduler = malloc(sizeof(scheduler_t));
+void initScheduler(int operationMode, int totalTickets, task_list_t *taskList) {
+    scheduler = malloc(sizeof(scheduler_t));
     if (scheduler == NULL) {
         printf("Error while allocating memory for scheduler_t.");
-        exit(0);
+        exit(1);
     }
-
     scheduler->operationMode = operationMode;
     scheduler->totalTickets = totalTickets;
     scheduler->taskList = taskList;
     scheduler->currentTask = NULL;
-
-    return scheduler;
 }
 
 void startScheduling(scheduler_t* scheduler) {
@@ -51,7 +49,7 @@ void startScheduling(scheduler_t* scheduler) {
     }
 
     // keep scheduling while there are still tasks to complete
-    while (scheduler->taskList->size != 0) {
+    for(int i = 0; i < 3; i++) {//while (scheduler->taskList->size != 0) {
         // 1. get winner ticket
         winnerTicket = getWinnerTicket(scheduler->totalTickets);
 
@@ -68,24 +66,4 @@ void startScheduling(scheduler_t* scheduler) {
 
     }
 
-}
-
-
-// Returns the current task defined by the scheduler
-task_t * getCurrentTask() {
-    return getTaskAt(scheduler->taskList, currentIndex) ;
-}
-
-// This should be used in the non expropiative mode
-void verifyCurrentThreadProgress(double progress){
-
-}
-
-// Starts the threads work using the current task 
-/**
- * This is required to give the thread all the required context
- * */
-void runThread() {
-    task_t* currentTask =  getCurrentTask(scheduler);
-    piCalculation(currentTask, verifyCurrentThreadProgress);
 }
