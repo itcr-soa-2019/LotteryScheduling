@@ -39,7 +39,4 @@ int appendTask(task_t *task, task_list_t *list);
 // remove task from list
 int removeTask(task_t *task, task_list_t *list);
 
-// get task item in list by index
-task_t* getTaskByIndex(int index, task_list_t *list);
-
 #endif

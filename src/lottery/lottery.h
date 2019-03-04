@@ -15,7 +15,7 @@ typedef struct lottery_t
    double cpuYieldPercentage;
 } lottery_t;
 
-lottery_t scheduler;
+lottery_t testScheduler;
 
 // the index of the current task in execution
 int currentIndex;

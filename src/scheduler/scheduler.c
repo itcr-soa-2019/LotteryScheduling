@@ -1,4 +1,5 @@
 #include "scheduler.h"
+#include "timer.h"
 
 int getWinnerTicket(int maxRange) {
     return rand() % maxRange + MIN_TICKETS;
@@ -25,6 +26,44 @@ task_t* getWinnerTask(task_list_t *taskList, int winnerTicket) {
     return NULL;
 }
 
+void allocateNextTask() {
+    if (scheduler->currentTask != NULL) {
+        printf("CurrentTask %d\n", scheduler->currentTask->id);
+    }
+    int winnerTicket;
+    task_t* winnerTask;
+
+    // 1. get winner ticket
+     winnerTicket = getWinnerTicket(scheduler->totalTickets);
+
+     // 2. find winner task in list and assign new current task
+     winnerTask = getWinnerTask(scheduler->taskList, winnerTicket);
+     scheduler->currentTask = winnerTask;
+    printf("Will now run Task %d.\n", scheduler->currentTask->id);
+
+    // set new alarm to keep scheduling tasks
+    setTimerAlarm(scheduler->currentTask->quantumSize); 
+}
+
+// This method is intercepted by allocateNextTask() when the timer alarm completes
+void schedule() {
+    if (scheduler->taskList == NULL) {
+        printf("No tasks to schedule.");
+        exit(0);
+    }
+
+     // keep scheduling while there are still tasks to complete
+     while (scheduler->taskList->size != 0) {
+         // 4. execute current task until signal (from thread or from timer according to operationMode)
+         executeTask(scheduler->currentTask);
+
+         // 5. check if the current task was completed to remove it from the scheduler task list
+         //(this step requires to schedule a new current task [allocateNextTask()])
+
+         // repeat
+    }
+}
+
 void initScheduler(int operationMode, int totalTickets, task_list_t *taskList) {
     scheduler = malloc(sizeof(scheduler_t));
     if (scheduler == NULL) {
@@ -35,35 +74,15 @@ void initScheduler(int operationMode, int totalTickets, task_list_t *taskList) {
     scheduler->totalTickets = totalTickets;
     scheduler->taskList = taskList;
     scheduler->currentTask = NULL;
-}
 
-void startScheduling(scheduler_t* scheduler) {
-    // init seed to get different random numbers every time the program runs
+    // init seed to get different random numbers for winner ticket every time the program runs
     srand(time(NULL));
-    int winnerTicket;
-    task_t* winnerTask;
 
-    if (scheduler->taskList == NULL) {
-        printf("No tasks to schedule.");
-        exit(0);
+    // Setup timer
+    if (scheduler->operationMode == 1) {
+        setupTimer(allocateNextTask);
+        allocateNextTask();
     }
-
-    // keep scheduling while there are still tasks to complete
-    for(int i = 0; i < 3; i++) {//while (scheduler->taskList->size != 0) {
-        // 1. get winner ticket
-        winnerTicket = getWinnerTicket(scheduler->totalTickets);
-
-        // 2. find winner task in list
-        winnerTask = getWinnerTask(scheduler->taskList, winnerTicket);
-
-        // 3. if scheduler->currentTask is not null, deallocate it and assign new current task with the winner
-
-        // 4. execute current task until signal (from thread or from timer according to operationMode)
-
-        // 5. check if the current task was completed to remove it from the scheduler task list
-
-        // repeat
-
-    }
-
+    schedule();
 }
+
