@@ -70,7 +70,7 @@ typedef struct list_t
 
 // Creates a new thread with f() being its entry point. 
 // The function returns the created thread id (>= 0) or ‐1 to indicate failure.
-thread_t* createThread(void *function, long tickets, long workUnits, long cpuYield);
+thread_t* createThread(void (*function) (void), long tickets, long workUnits, long cpuYield);
 
 // Saves the thread execution context
 int saveThread(thread_t* thread);

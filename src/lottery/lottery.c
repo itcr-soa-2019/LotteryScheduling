@@ -22,3 +22,7 @@ void startLotterySchedule()
 {
 
 }
+
+void runThread(){
+
+}

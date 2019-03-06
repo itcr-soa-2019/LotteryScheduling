@@ -20,9 +20,17 @@ Proyecto 1: Lottery Scheduling */
 #include "jobs/jobs.h"
 #include "lottery/lottery.h"
 #include "jobs/piCalc.h"
+#include <stdio.h>
+#include <stdlib.h>
 
-void stub_reporter(double p){
-    printf("Thread progress %f \n", p);
+
+void stub_reporter(){
+     while(1){
+        piCalculation(currentTask, reportProgress);
+        printf("TESTTTTTT");
+        saveThread(currentTask->thread);
+        break;
+     }
 }
 
 /**
@@ -34,15 +42,24 @@ void piCalcTester(){
     threadsNum = exeInfo.numThreads;
     numThreads = threadsNum;
     partialValues = calloc(sizeof(double),numThreads);
+    thread_t *thread;
     for (int i = 0; i < threadsNum; i++)
     {
-        thread_t *thread = malloc(sizeof(thread_t));
+        thread = createThread(stub_reporter,10,5,10);
         task_t *task = malloc(sizeof(task_t));
         thread-> id = i;
         task->thread = thread;
         task->workUnits = 4;
-        piCalculation(task, stub_reporter);
+        currentTask = task;
+       // piCalculation(task, stub_reporter);
+        //if(saveThread(task->thread) == 0){
+            printf("TEST");
+            Resume_Thread(task->thread);
+
+       // }
+        // delay(1000);
     }
+    // Resume_Thread(thread);
     calculated_pi = 0;
     for(int x= 0; x< threadsNum; x++)
     {
@@ -59,7 +76,7 @@ int main(int argc, char **argv)
 {   
     initLists();    
     piCalcTester();
-    printExecution();
-    initLotterySchedule(runThread);
+    // printExecution();
+    // initLotterySchedule(runThread);
     return 0;
 }

@@ -20,7 +20,7 @@ address_t translate_address(address_t address) {
 }
 
 // create a new thread and return the pid
-thread_t* createThread(void *function, long tickets, long workUnits, long cpuYield) {
+thread_t* createThread(void (*function) (void), long tickets, long workUnits, long cpuYield) {
     if ( ! ( numNodes(threads) < MAX_THREADS ) ) {
         return NULL;
     }
@@ -52,7 +52,7 @@ thread_t* createThread(void *function, long tickets, long workUnits, long cpuYie
     (thread->jmpbuf->__jmpbuf)[JB_SP] = translate_address(sp);
     (thread->jmpbuf->__jmpbuf)[JB_PC] = translate_address(pc);    
     sigemptyset(&thread->jmpbuf->__saved_mask);
-    
+    printf("%s:%s:%d - location of function = %p\n", __FILE__, "CreateThread()", __LINE__, (void *)function);
     printf("Thread created, id: %d\n", newId);
     return thread;
 }
@@ -65,7 +65,10 @@ int saveThread(thread_t* thread) {
 
 // Resumes thread
 void Resume_Thread(thread_t* thread) {
+    printf("spawn thread: %ld", (thread->jmpbuf->__jmpbuf)[JB_PC]);
     siglongjmp(thread->jmpbuf, 1);
+    printf("Esto NO DEBERIA SALIR");
+
 }
 
 // evaluates if the thread and list are not null 

@@ -36,3 +36,15 @@ void calculateWorkUnit(int startIndex, double *partialSum) {
     }
 }
 
+void reportProgress(double p) {
+    printf("Percentage: %f", p);
+}
+
+/**
+ * Start thread work
+ */
+void threadRun(){
+    printf("****Thread Run: %f", 0.0);
+    // piCalculation(currentTask,  reportProgress);
+}
+

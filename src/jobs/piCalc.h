@@ -5,9 +5,13 @@
 volatile double calculated_pi;
 int numThreads;
 double* partialValues;
+task_t* currentTask;
+
 #define TermsPerUnit 50
 /**
  * Function to calculate PI terms
  */
 void piCalculation(task_t *task, void (*reportProgress)(double));
 void calculateWorkUnit(int startIndex, double *partialSum);
+void reportProgress(double p);
+void threadRun();
