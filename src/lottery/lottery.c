@@ -22,3 +22,8 @@ void startLotterySchedule()
 {
 
 }
+
+// Starts the threads work using the current task 
+void runThread() {
+
+}

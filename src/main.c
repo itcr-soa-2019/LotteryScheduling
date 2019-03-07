@@ -20,6 +20,7 @@ Proyecto 1: Lottery Scheduling */
 #include "jobs/jobs.h"
 #include "lottery/lottery.h"
 #include "jobs/piCalc.h"
+#include "scheduler/scheduler.h"
 
 void stub_reporter(double p){
     printf("Thread progress %f \n", p);
@@ -41,7 +42,7 @@ void piCalcTester(){
         thread-> id = i;
         task->thread = thread;
         task->workUnits = 4;
-        piCalculation(task, stub_reporter);
+        piCalculation(task, stub_reporter); //executeTask(task);
     }
     calculated_pi = 0;
     for(int x= 0; x< threadsNum; x++)
@@ -52,11 +53,37 @@ void piCalcTester(){
     printf("PI:%f\n", (double)calculated_pi * 4.0);
 }
 
+void schedulerTester() {
+    //create threads
+    thread_t *thread1 = malloc(sizeof(thread_t));
+    thread1-> id = 1;
+    thread_t *thread2 = malloc(sizeof(thread_t));
+    thread2-> id = 2;
+    thread_t *thread3 = malloc(sizeof(thread_t));
+    thread3-> id = 3;
+
+    //create task
+    task_t* test = initTask(1, 3, 3, 1,  1, thread1);
+    task_t* test2 = initTask(2, 5, 3, 1,  1, thread2);
+    task_t* test3 = initTask(3, 1, 3, 1,  1, thread3);
+
+    //create tasklist
+    task_list_t* testList = initTaskList();
+    appendTask(test, testList);
+    appendTask(test2, testList);
+    appendTask(test3, testList);
+
+    // start scheduling
+    initScheduler(1, 9, testList);
+}
+
+
 /**
  * Main execution method
  */
 int main(int argc, char **argv)
-{   
+{  
+    schedulerTester();
     initLists();    
     piCalcTester();
     printExecution();

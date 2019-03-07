@@ -73,6 +73,7 @@ int removeTask(task_t *task, task_list_t *list) {
     if (task == list->head) {
         list->head = list->head->next;
         free(task);
+        list->size--;
         return 0;
     }
 
@@ -84,6 +85,7 @@ int removeTask(task_t *task, task_list_t *list) {
         if (current == task) {
             prev->next = current->next;
             free(task);
+            list->size--;
             return 0;
         }
         prev = current;
