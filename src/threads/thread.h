@@ -48,12 +48,13 @@ typedef struct thread_t
    int id;
    char *stack;
    state_t *status;
-   long tickets;
-   long workUnits;
-   double cpuYieldPercentage;
+   long tickets; //podemos borrar esto?
+   long workUnits; //podemos borrar esto?
+   double cpuYieldPercentage; //podemos borrar esto?
    sigjmp_buf jmpbuf;
 } thread_t;
 
+//borrar esto
 typedef struct node_t
 {
    thread_t *thread;
@@ -61,6 +62,7 @@ typedef struct node_t
    struct node_t *prev;
 } node_t;
 
+//borrar esto
 typedef struct list_t
 {
    node_t *head;

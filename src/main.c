@@ -55,17 +55,17 @@ void piCalcTester(){
 
 void schedulerTester() {
     //create threads
-    thread_t *thread1 = malloc(sizeof(thread_t));
-    thread1-> id = 1;
-    thread_t *thread2 = malloc(sizeof(thread_t));
-    thread2-> id = 2;
-    thread_t *thread3 = malloc(sizeof(thread_t));
-    thread3-> id = 3;
+    thread_t *thread1 = createThread(runThread, 3, 3, 1);
+    thread_t *thread2 = createThread(runThread, 5, 1, 1); 
+    thread_t *thread3 = createThread(runThread, 1, 3, 1);  
 
     //create task
-    task_t* test = initTask(1, 3, 3, 1,  1, thread1, 10);
-    task_t* test2 = initTask(2, 5, 3, 1,  1, thread2, 10);
-    task_t* test3 = initTask(3, 1, 3, 1,  1, thread3, 10);
+    /*el cpuYieldPercentage tiene que ser 1 hasta que correr los threads sirva y el progreso en el 
+    piCalc se retome después de un cambio de contexto. porque sino nunca se cumple la condición de task
+    completado del allocateNextTask()*/
+    task_t* test = initTask(1, 3, 3, 1, 1,  0, thread1); 
+    task_t* test2 = initTask(2, 5, 3, 1, 1, 0, thread2);
+    task_t* test3 = initTask(3, 1, 3, 1, 1, 0, thread3);
 
     //create tasklist
     task_list_t* testList = initTaskList();
@@ -74,9 +74,15 @@ void schedulerTester() {
     appendTask(test3, testList);
 
     // start scheduling
-    initScheduler(1, 9, testList);
+    initScheduler(1, 9, testList); // expropiative
+    //initScheduler(0, 9, testList); //non-expropiative
 }
 
+// Main to test scheduler
+/*int main(int argc, char **argv)
+{   
+  schedulerTester();
+}*/
 
 // Handler of the Start button clicked event
 void start_application() {

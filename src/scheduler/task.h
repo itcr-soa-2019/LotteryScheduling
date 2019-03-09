@@ -8,12 +8,11 @@ typedef struct task_t
    int id;
    int tickets;
    int workUnits;
-   int quantumSize; // millisecs if expropiative mode or work % if nonexpropiative mode
+   int quantumSize; // millisecs of execution given in expropiative mode 
+   double cpuYieldPercentage; // work % that must be completed in non-expropiative mode
    double progress; // Indicates the current progress value of this task
    thread_t *thread;
-   long currentThread;
    struct task_t *next;
-   double cpuYieldPercentage;
 } task_t;
 
 typedef struct task_list_t
@@ -24,13 +23,7 @@ typedef struct task_list_t
 } task_list_t;
 
 // initialize task element
-task_t* initTask(int id, int tickets, int workUnits, int quantumSize, double progress, thread_t *thread,double cpuYieldPercentage);
-
-// execute pi calculation
-void executeTask(task_t *task);
-
-// stop task execution
-void stopTask(task_t *task);
+task_t* initTask(int id, int tickets, int workUnits, int quantumSize, double cpuYieldPercentage, double progress, thread_t *thread);
 
 // initialize new list of tasks
 task_list_t* initTaskList();
