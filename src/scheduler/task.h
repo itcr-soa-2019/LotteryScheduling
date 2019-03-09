@@ -11,6 +11,7 @@ typedef struct task_t
    int quantumSize; // millisecs if expropiative mode or work % if nonexpropiative mode
    double progress; // Indicates the current progress value of this task
    thread_t *thread;
+   long currentThread;
    struct task_t *next;
 } task_t;
 

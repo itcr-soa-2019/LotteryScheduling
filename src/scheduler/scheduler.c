@@ -31,6 +31,17 @@ task_t* getWinnerTask(task_list_t *taskList, int winnerTicket) {
     return NULL;
 }
 
+
+// Saves the current thread context (sigjmp_buf jmpbuf)
+int scheduler_SaveThread(scheduler_t *scheduler){
+    return sigsetjmp(scheduler->currentTask->thread->jmpbuf, 1);
+}
+
+//Resume the context 
+void scheduler_ResumesThread(scheduler_t *scheduler){
+    siglongjmp(scheduler->currentTask->thread->jmpbuf, 1);
+}
+
 // Removes current task from scheduler's list
 void deallocateCurrentTask() {
     scheduler->totalTickets -= scheduler->currentTask->tickets;
@@ -57,6 +68,10 @@ void allocateNextTask() {
 
         // set new alarm for the selected current task
         setTimerAlarm(scheduler->currentTask->quantumSize); 
+
+
+
+
     } else {
         printf("No tasks left to schedule.\n");
     }
@@ -76,6 +91,7 @@ void executeTasks() {
         // ToDo: agregar validación en piCalc para que no ejecute nada si el progreso del task ya se completó, para que le de tiempo a la tarea de completar su quantum en este ciclo.
         //executeTask(scheduler->currentTask);
         printf("Executing Task %d.\n", scheduler->currentTask->id);
+       // piCalculation(task, verifyCurrentThreadProgress);
     }
 }
 
@@ -99,5 +115,7 @@ void initScheduler(int operationMode, int totalTickets, task_list_t *taskList) {
         allocateNextTask(); //to select the first task to run
     }
     executeTasks(); //while durante el que se ejecuta el programa y durante ese tiempo se van a estar seteando alarmas
+    scheduler_ResumesThread(scheduler);
+    
 }
 
