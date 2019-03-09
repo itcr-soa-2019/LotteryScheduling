@@ -65,7 +65,7 @@ int saveThread(thread_t* thread) {
 
 // Resumes thread
 void Resume_Thread(thread_t* thread) {
-    printf("spawn thread: %ld", (thread->jmpbuf->__jmpbuf)[JB_PC]);
+    printf("spawn thread: %d", thread->id) ;
     siglongjmp(thread->jmpbuf, 1);
     printf("Esto NO DEBERIA SALIR");
 
