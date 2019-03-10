@@ -78,15 +78,19 @@ void schedulerTester() {
 }
 
 
+// Handler of the Start button clicked event
+void start_application() {
+    initLists();    
+    piCalcTester();
+    printExecution();
+    initLotterySchedule(runThread);
+}
+
 /**
  * Main execution method
  */
 int main(int argc, char **argv)
 {   
-    // initLists();    
-    // piCalcTester();
-    // printExecution();
-    // initLotterySchedule(runThread);
     GtkBuilder *builder;
     GObject *window;
     GObject *button;
@@ -103,16 +107,16 @@ int main(int argc, char **argv)
       return 1;
     }
      /* Connect signal handlers to the constructed widgets. */
-  window = gtk_builder_get_object (builder, "window");
+  window = gtk_builder_get_object (builder, "main_window");
   g_signal_connect (window, "destroy", G_CALLBACK (gtk_main_quit), NULL);
 
-//   button = gtk_builder_get_object (builder, "button1");
-//   g_signal_connect (button, "clicked", G_CALLBACK (print_hello), NULL);
+  button = gtk_builder_get_object (builder, "start_scheduler");
+  g_signal_connect (button, "clicked", G_CALLBACK (start_application), NULL);
 
 //   button = gtk_builder_get_object (builder, "button2");
 //   g_signal_connect (button, "clicked", G_CALLBACK (print_hello), NULL);
 
-  button = gtk_builder_get_object (builder, "quit");
+  button = gtk_builder_get_object (builder, "exit_application");
   g_signal_connect (button, "clicked", G_CALLBACK (gtk_main_quit), NULL);
   GObject *progress2;
   progress2 = gtk_builder_get_object(builder, "progress_2");
