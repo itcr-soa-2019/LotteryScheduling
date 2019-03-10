@@ -31,10 +31,11 @@ task_t *task1;
 task_t *task2;
 
 void reportProgress2(double p) {
-    if(currentTask->thread->id >= 1){
+    printf("CurrentProgress: %f\n ", p);
+    if(currentTask->thread->id >= 1 && p >= 1.0){ //Thread 2 Done Must Exit
         saveThread(task2->thread);
         printf("FINISH JOB");
-        return;
+        exit(0);
     }
     if(p == 1.0){
         printf("Thread DONE");
