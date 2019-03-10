@@ -13,6 +13,7 @@ typedef struct task_t
    thread_t *thread;
    long currentThread;
    struct task_t *next;
+   double cpuYieldPercentage;
 } task_t;
 
 typedef struct task_list_t
@@ -23,7 +24,7 @@ typedef struct task_list_t
 } task_list_t;
 
 // initialize task element
-task_t* initTask(int id, int tickets, int workUnits, int quantumSize, double progress, thread_t *thread);
+task_t* initTask(int id, int tickets, int workUnits, int quantumSize, double progress, thread_t *thread,double cpuYieldPercentage);
 
 // execute pi calculation
 void executeTask(task_t *task);
