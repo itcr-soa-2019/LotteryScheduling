@@ -14,7 +14,7 @@ typedef struct scheduler_t
      
 } scheduler_t;
 
-// A pointer to the current scheduler sctruct
+// A pointer to the current scheduler struct
 extern scheduler_t* scheduler;
 
 // Initialize and start scheduling tasks
@@ -29,4 +29,6 @@ int scheduler_SaveThread(scheduler_t* scheduler);
 //Resumes the context of the scheduler
 void scheduler_ResumesThread(scheduler_t* scheduler); 
 
+// Removes current task from scheduler's list
+void deallocateCurrentTask();
 #endif

@@ -63,9 +63,9 @@ void schedulerTester() {
     thread3-> id = 3;
 
     //create task
-    task_t* test = initTask(1, 3, 3, 1,  1, thread1);
-    task_t* test2 = initTask(2, 5, 3, 1,  1, thread2);
-    task_t* test3 = initTask(3, 1, 3, 1,  1, thread3);
+    task_t* test = initTask(1, 3, 3, 1,  1, thread1, 10);
+    task_t* test2 = initTask(2, 5, 3, 1,  1, thread2, 10);
+    task_t* test3 = initTask(3, 1, 3, 1,  1, thread3, 10);
 
     //create tasklist
     task_list_t* testList = initTaskList();
