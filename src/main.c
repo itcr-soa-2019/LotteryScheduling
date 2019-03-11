@@ -16,10 +16,10 @@ Integrantes: Fabiola Espinoza
 			 Esteban Leandro
 Proyecto 1: Lottery Scheduling */
 
-#include <gtk/gtk.h>
 #include "jobs/jobs.h"
 #include "lottery/lottery.h"
 #include "jobs/piCalc.h"
+#include "ui/ui_functions.h"
 
 void stub_reporter(double p){
     printf("Thread progress %f \n", p);
@@ -96,6 +96,12 @@ int main(int argc, char **argv)
   progress2 = gtk_builder_get_object(builder, "progress_2");
   gtk_widget_set_visible(GTK_WIDGET(progress2), 1); //Make it visible
   gtk_progress_bar_set_fraction(GTK_PROGRESS_BAR(progress2), 0.50);
+ // Sample hide some of the threads
+  for(size_t i = 6; i < 12; i++)
+  {
+    hide_thread(builder, i);
+  }
+  
 
   gtk_main ();
 }
