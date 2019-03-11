@@ -13,7 +13,7 @@ build:
 	$(CC) $(CFLAGS) $(CPPFLAGS) -c $(SOURCES) 
 	mv *.o src/ 
 	cp src/execution.conf $(TARGET)
-	cp src/ui/builder.ui src/
+	cp src/ui/builder.ui $(TARGET)
 
 $(EXECUTABLE): $(TARGET) build
 	$(CC) $(CFLAGS) $(CPPFLAGS) $(SOURCES) -o $(TARGET)/$(EXECUTABLE) -lm $(LDLIBS)
