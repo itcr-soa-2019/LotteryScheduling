@@ -10,7 +10,7 @@
  */
 void piCalculation(task_t *task, void (*verifyCurrentThreadProgress)(double,task_t *task) ){
     double partialSum = 0;
-    double lastValue = 0;
+    //double lastValue = 0;
     int id = task->thread->id;
     int workUnits = task->workUnits;
     double startPoint = id * workUnits * TermsPerUnit;

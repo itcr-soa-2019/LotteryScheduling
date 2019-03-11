@@ -1,11 +1,9 @@
-
 #include <malloc.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <setjmp.h>
 #include <signal.h>
 #include <time.h>
-#include <math.h>
 
 // header definition
 #ifndef thread_h
@@ -54,19 +52,6 @@ typedef struct thread_t
    sigjmp_buf jmpbuf;
 } thread_t;
 
-typedef struct node_t
-{
-   thread_t *thread;
-   struct node_t *next;
-   struct node_t *prev;
-} node_t;
-
-typedef struct list_t
-{
-   node_t *head;
-   unsigned int size;
-} list_t;
-
 
 // Creates a new thread with f() being its entry point. 
 // The function returns the created thread id (>= 0) or ‐1 to indicate failure.
@@ -77,17 +62,5 @@ int saveThread(thread_t* thread);
 
 // Resumes thread
 void Resume_Thread(thread_t* thread);
-
-// add a specific thread to the thread list
-int appendThread(thread_t *thread, list_t *list);
-
-// number of nodes
-unsigned int numNodes(list_t *threads);
-
-// check memory allocation
-void mallocCheck(void *pointer, int lineNumber);
-
-// initialize lists
-void initLists();
 
 #endif

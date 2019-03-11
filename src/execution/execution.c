@@ -1,6 +1,5 @@
 #include "execution.h"
 
-
 // file settings configuration
 const char *OPERATION_MODE = "operationMode";
 const char *NUMBER_THREADS = "numThreads";
@@ -85,7 +84,7 @@ struct execution readFromFile(char *filename) {
                 int i = 0;
                 while(t_workUnits != NULL && i < executor.numThreads)
                 {
-                    executor.workUnits[i] = strtol(valLine, (char **)NULL, 10);
+                    executor.workUnits[i] = strtol(t_workUnits, (char **)NULL, 10);
                     t_workUnits = strtok(NULL, DELIM_LIST);
                     i++;
                 }
@@ -107,34 +106,40 @@ struct execution readFromFile(char *filename) {
  */
 void printExecution() {
     int i = 0;
-    printf("\n**********************************\n");
+    printf("\n***************** EXECUTOR *****************\n");
     printf("Operation Mode: %d\n", executor.operationMode);
-    printf("----------------------------------\n");
-	printf("Num Threads: %ld\n", executor.numThreads);
-    printf("----------------------------------\n");
-    printf("Tickets distribution: \n");    
+	printf("THREADS: %ld\n", executor.numThreads);
+    printf("TICKETS: ");    
     for(i = 0; i < executor.numThreads; i++)
     {
-        printf("Thread %d: %ld \n", i+1, executor.tickets[i]);
+        printf("Thread %d:%ld, ", i+1, executor.tickets[i]);
     }
-    printf("----------------------------------\n");
-    printf("Work distribution: \n");
+    printf("\nWORK: ");
     for(i = 0; i < executor.numThreads; i++)
     {
-        printf("Thread %d: %ld \n", i+1, executor.workUnits[i]);
+        printf("Thread %d:%ld, ", i+1, executor.workUnits[i]);
     }
-    printf("----------------------------------\n");
-	printf("Quantum Size: %d\n", executor.quantumSize);
-    printf("----------------------------------\n");
+	printf("\nQuantum Size: %d\n", executor.quantumSize);
     printf("CPU Percentage: %lf\n", executor.cpuYieldPercentage);
-	printf("**********************************\n");
+}
+
+/**
+ *  return the total tickets among the threads
+ */
+int getTotalTickets(){
+    int total = 0, i = 0;
+    for(i = 0; i < executor.numThreads; i++)
+    {
+        total += executor.tickets[i];
+    }
+    return total;
 }
 
 /**
  * Initial configuration, could be loaded from a
  * configuration file or from the GTK GUI (temp keyboard)
  */
-struct execution InitializeExecution(){
+struct execution initializeExecution(){
     int mode;
     printf("Initialize Lottery: \n[1] Keyboard [2] Config File: ");
     scanf("%d", &mode);

@@ -16,7 +16,6 @@ Integrantes: Fabiola Espinoza
 			 Esteban Leandro
 Proyecto 1: Lottery Scheduling */
 
-#include "jobs/jobs.h"
 #include "lottery/lottery.h"
 #include "jobs/piCalc.h"
 #include "scheduler/scheduler.h"
@@ -30,7 +29,7 @@ void stub_reporter(double p){
  *  Tester method for Pi calculation
  */
 void piCalcTester(){
-    struct execution exeInfo = InitializeExecution();
+    struct execution exeInfo = initializeExecution();
     int threadsNum = 0;
     threadsNum = exeInfo.numThreads;
     numThreads = threadsNum;
@@ -54,33 +53,21 @@ void piCalcTester(){
 }
 
 void schedulerTester() {
-    //create threads
-    thread_t *thread1 = malloc(sizeof(thread_t));
-    thread1-> id = 1;
-    thread_t *thread2 = malloc(sizeof(thread_t));
-    thread2-> id = 2;
-    thread_t *thread3 = malloc(sizeof(thread_t));
-    thread3-> id = 3;
+    //initialize config file
+    struct execution exeInfo = initializeExecution();    
+    printExecution();
 
-    //create task
-    task_t* test = initTask(1, 3, 3, 1,  1, thread1, 10);
-    task_t* test2 = initTask(2, 5, 3, 1,  1, thread2, 10);
-    task_t* test3 = initTask(3, 1, 3, 1,  1, thread3, 10);
+    //create tasklist, threads and tasks
+    task_list_t* tasks = initTaskList(piCalculation);    
+    printTaskList(tasks);
 
-    //create tasklist
-    task_list_t* testList = initTaskList();
-    appendTask(test, testList);
-    appendTask(test2, testList);
-    appendTask(test3, testList);
-
-    // start scheduling
-    initScheduler(1, 9, testList);
+    //start scheduling
+    int totalTickets = getTotalTickets();
+    //initScheduler(exeInfo.operationMode, totalTickets, tasks); 
 }
 
-
 // Handler of the Start button clicked event
-void start_application() {
-    initLists();    
+void start_application() {    
     piCalcTester();
     printExecution();
     initLotterySchedule(runThread);
@@ -91,43 +78,49 @@ void start_application() {
  */
 int main(int argc, char **argv)
 {   
+    schedulerTester();
+}
+
+int main2(int argc, char **argv)
+{   
     GtkBuilder *builder;
     GObject *window;
     GObject *button;
     GError *error = NULL;
 
-  gtk_init (&argc, &argv);
+    gtk_init (&argc, &argv);
 
-  /* Construct a GtkBuilder instance and load our UI description */
-  builder = gtk_builder_new ();
-  if (gtk_builder_add_from_file (builder, "builder.ui", &error) == 0)
+    /* Construct a GtkBuilder instance and load our UI description */
+    builder = gtk_builder_new ();
+    if (gtk_builder_add_from_file (builder, "builder.ui", &error) == 0)
     {
-      g_printerr ("Error loading file: %s\n", error->message);
-      g_clear_error (&error);
-      return 1;
+        g_printerr ("Error loading file: %s\n", error->message);
+        g_clear_error (&error);
+        return 1;
     }
-     /* Connect signal handlers to the constructed widgets. */
-  window = gtk_builder_get_object (builder, "main_window");
-  g_signal_connect (window, "destroy", G_CALLBACK (gtk_main_quit), NULL);
+    
+    /* Connect signal handlers to the constructed widgets. */
+    window = gtk_builder_get_object (builder, "main_window");
+    g_signal_connect (window, "destroy", G_CALLBACK (gtk_main_quit), NULL);
 
-  button = gtk_builder_get_object (builder, "start_scheduler");
-  g_signal_connect (button, "clicked", G_CALLBACK (start_application), NULL);
+    button = gtk_builder_get_object (builder, "start_scheduler");
+    g_signal_connect (button, "clicked", G_CALLBACK (start_application), NULL);
 
-//   button = gtk_builder_get_object (builder, "button2");
-//   g_signal_connect (button, "clicked", G_CALLBACK (print_hello), NULL);
+    // button = gtk_builder_get_object (builder, "button2");
+    // g_signal_connect (button, "clicked", G_CALLBACK (print_hello), NULL);
 
-  button = gtk_builder_get_object (builder, "exit_application");
-  g_signal_connect (button, "clicked", G_CALLBACK (gtk_main_quit), NULL);
-  GObject *progress2;
-  progress2 = gtk_builder_get_object(builder, "progress_2");
-  gtk_widget_set_visible(GTK_WIDGET(progress2), 1); //Make it visible
-  gtk_progress_bar_set_fraction(GTK_PROGRESS_BAR(progress2), 0.50);
- // Sample hide some of the threads
-  for(size_t i = 6; i < 12; i++)
-  {
-    hide_thread(builder, i);
-  }
-  
+    button = gtk_builder_get_object (builder, "exit_application");
+    g_signal_connect (button, "clicked", G_CALLBACK (gtk_main_quit), NULL);
+    GObject *progress2;
+    progress2 = gtk_builder_get_object(builder, "progress_2");
+    gtk_widget_set_visible(GTK_WIDGET(progress2), 1); //Make it visible
+    gtk_progress_bar_set_fraction(GTK_PROGRESS_BAR(progress2), 0.50);
+    
+    // Sample hide some of the threads
+    for(size_t i = 6; i < 12; i++)
+    {
+        hide_thread(builder, i);
+    }  
 
-  gtk_main ();
+    gtk_main ();
 }

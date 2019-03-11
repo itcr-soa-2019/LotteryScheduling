@@ -33,7 +33,7 @@ void executeTask(task_t *task);
 void stopTask(task_t *task);
 
 // initialize new list of tasks
-task_list_t* initTaskList();
+task_list_t* initTaskList(void *function);
 
 // add new element to existing list of tasks
 int appendTask(task_t *task, task_list_t *list);
