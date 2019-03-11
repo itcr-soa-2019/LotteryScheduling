@@ -46,9 +46,9 @@ typedef struct thread_t
    int id;
    char *stack;
    state_t *status;
-   long tickets;
-   long workUnits;
-   double cpuYieldPercentage;
+   long tickets; //podemos borrar esto?
+   long workUnits; //podemos borrar esto?
+   double cpuYieldPercentage; //podemos borrar esto?
    sigjmp_buf jmpbuf;
 } thread_t;
 

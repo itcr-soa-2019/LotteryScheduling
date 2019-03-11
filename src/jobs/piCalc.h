@@ -11,5 +11,5 @@ double* partialValues;
 /**
  * Function to calculate PI terms
  */
-void piCalculation(task_t *task, void (*verifyCurrentThreadProgress)(double,task_t *task));
+void piCalculation(task_t *task, void (*reportProgress)(double));
 void calculateWorkUnit(int startIndex, double *partialSum);

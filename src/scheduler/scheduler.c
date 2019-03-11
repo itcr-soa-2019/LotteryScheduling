@@ -1,5 +1,6 @@
 #include "scheduler.h"
 #include "timer.h"
+#include "../jobs/piCalc.h"
 
 int getWinnerTicket(int maxRange) {
     if (maxRange > 0) {
@@ -31,17 +32,6 @@ task_t* getWinnerTask(task_list_t *taskList, int winnerTicket) {
     return NULL;
 }
 
-
-// Saves the current thread context (sigjmp_buf jmpbuf)
-int scheduler_SaveThread(scheduler_t *scheduler){
-    return sigsetjmp(scheduler->currentTask->thread->jmpbuf, 1);
-}
-
-//Resume the context 
-void scheduler_ResumesThread(scheduler_t *scheduler){
-    siglongjmp(scheduler->currentTask->thread->jmpbuf, 1);
-}
-
 // Removes current task from scheduler's list
 void deallocateCurrentTask() {
     scheduler->totalTickets -= scheduler->currentTask->tickets;
@@ -49,8 +39,9 @@ void deallocateCurrentTask() {
     scheduler->currentTask = NULL;
 }
 
-// Triggered when the timer alarm completes. Schedules a new task to be executed.
-void allocateNextTask() {
+// Schedules a new task to be executed.
+// In expropiative mode, this method is triggered when the timer alarm completes. 
+void allocateNextTask() { 
     // check if progress is 100% and delete from task list
     if (scheduler->currentTask != NULL && scheduler->currentTask->progress == 1) {
         printf("Task COMPLETED-> %d.\n", scheduler->currentTask->id);
@@ -59,40 +50,60 @@ void allocateNextTask() {
 
     // schedule new task
     if (scheduler->taskList->size > 0) {
-        // 1. get winner ticket
+        // 1. before selecting a new current task, save the thread context of the previous
+        if (scheduler->currentTask != NULL) {
+            printf("SAVE %p.\n", scheduler->currentTask->thread);
+            //saveThread(scheduler->currentTask->thread);
+        } 
+        // 2. get winner ticket
         int winnerTicket = getWinnerTicket(scheduler->totalTickets);
-
-        // 2. find winner task in list and assign new current task
+    
+        // 3. find winner task in list and assign new current task
         scheduler->currentTask = getWinnerTask(scheduler->taskList, winnerTicket);
+
         printf("Will now run Task-> %d.\n", scheduler->currentTask->id);
 
+        // 4. resume thread to start its execution
+        printf("RESUME %p.\n", scheduler->currentTask->thread);
+        runThread(); //borrar esto (simula ejecucion del hilo)
+        //Resume_Thread(scheduler->currentTask->thread);
+
         // set new alarm for the selected current task
-        setTimerAlarm(scheduler->currentTask->quantumSize); 
-
-
-
-
+        if (scheduler->operationMode == 1) {
+            setTimerAlarm(scheduler->currentTask->quantumSize);
+        }
     } else {
         printf("No tasks left to schedule.\n");
-    }
-    
+    } 
 }
 
-// This method is intercepted by allocateNextTask() when the timer alarm completes
+// This method is intercepted by allocateNextTask() when the timer alarm completes.
+// This loop is required because during this time alarms for the expropiative mode will be created. 
 void executeTasks() {
     if (scheduler->taskList == NULL ) {
         printf("No tasks to schedule.");
         exit(0);
     }
-
     // keep processing while there are still tasks to complete
     while (scheduler->taskList->size != 0) {
-        // 4. execute current task until signal (from thread or from timer according to operationMode)
         // ToDo: agregar validación en piCalc para que no ejecute nada si el progreso del task ya se completó, para que le de tiempo a la tarea de completar su quantum en este ciclo.
-        //executeTask(scheduler->currentTask);
         printf("Executing Task %d.\n", scheduler->currentTask->id);
-       // piCalculation(task, verifyCurrentThreadProgress);
     }
+}
+
+// Used only for the non expropiative mode. 
+// Progress is updated for the current task by piCalc, every time a workunit is completed.
+void verifyCurrentThreadProgress(double progress){
+    if (scheduler->operationMode == 0) {
+        printf("CurrentTask progress: %f\n", scheduler->currentTask->progress);
+        if (scheduler->currentTask->progress >= scheduler->currentTask->cpuYieldPercentage) {
+            allocateNextTask();
+        }   
+    }
+}
+
+void runThread() {
+    piCalculation(scheduler->currentTask, verifyCurrentThreadProgress);
 }
 
 void initScheduler(int operationMode, int totalTickets, task_list_t *taskList) {
@@ -106,16 +117,20 @@ void initScheduler(int operationMode, int totalTickets, task_list_t *taskList) {
     scheduler->taskList = taskList;
     scheduler->currentTask = NULL;
 
+    // init array of partial pi values
+    partialValues = calloc(sizeof(double), scheduler->taskList->size);
+
     // init seed to get different random numbers for winner ticket every time the program runs
     srand(time(NULL));
 
     // Setup timer
     if (scheduler->operationMode == 1) {
         setupTimer(allocateNextTask);
-        allocateNextTask(); //to select the first task to run
     }
-    executeTasks(); //while durante el que se ejecuta el programa y durante ese tiempo se van a estar seteando alarmas
-    scheduler_ResumesThread(scheduler);
-    
+    allocateNextTask(); //to select the first task to run
+
+    if (scheduler->operationMode == 1) {
+        executeTasks(); 
+    }
 }
 

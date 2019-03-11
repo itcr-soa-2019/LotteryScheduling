@@ -1,38 +1,19 @@
 #include "task.h"
 #include "../execution/execution.h"
 
-task_t* initTask(int id, int tickets, int workUnits, int quantumSize, double progress, thread_t *thread, double cpuYieldPercentage) {
+task_t* initTask(int id, int tickets, int workUnits, int quantumSize, double cpuYieldPercentage, double progress, thread_t *thread) {
     task_t *task = malloc(sizeof(task_t));
     task->id = id;
     task->tickets = tickets;
     task->workUnits = workUnits;
     task->quantumSize = quantumSize;
+    task->cpuYieldPercentage = cpuYieldPercentage;
     task->progress = progress;
     task->thread = thread;
     task->next = NULL;
     task->cpuYieldPercentage = cpuYieldPercentage;
 
     return task;
-}
-
-// This should be used in the non expropiative mode
-void verifyCurrentThreadProgress(double progress, task_t *task){
-
-   if (task->progress >= task->cpuYieldPercentage) {
-        printf("Allocate Next Task");
-        saveThread(task->thread);
-        allocateNextTask(); //to select another task to run
-   }
-    //executeTasks(); //while durante el que se ejecuta el programa y durante ese tiempo se van a estar seteando alarmas
-  
-}
-
-void executeTask(task_t *task) {
-    piCalculation(task, verifyCurrentThreadProgress);
-}
-
-void stopTask(task_t *task) {
-    // stop pi calculation, update progress and workunits left for this task
 }
 
 task_list_t* initTaskList(void *function) {
@@ -57,7 +38,7 @@ task_list_t* initTaskList(void *function) {
         tickets = executor.tickets[i];
         workUnits = executor.workUnits[i];
         thread_t *thread = createThread(function, tickets, workUnits, cpuPerc);
-        task_t* task = initTask(i, tickets, workUnits, quantum, 0, thread, cpuPerc);        
+        task_t* task = initTask(i, tickets, workUnits, quantum, cpuPerc, 0, thread);
         appendTask(task, taskList);
     }
 

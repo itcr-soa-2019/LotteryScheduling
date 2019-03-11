@@ -73,15 +73,7 @@ void start_application() {
     initLotterySchedule(runThread);
 }
 
-/**
- * Main execution method
- */
-int main(int argc, char **argv)
-{   
-    schedulerTester();
-}
-
-int main2(int argc, char **argv)
+int initGtkUI(int argc, char **argv)
 {   
     GtkBuilder *builder;
     GObject *window;
@@ -123,4 +115,13 @@ int main2(int argc, char **argv)
     }  
 
     gtk_main ();
+}
+
+
+/**
+ * Main execution method
+ */
+int main(int argc, char **argv)
+{   
+    schedulerTester();
 }
