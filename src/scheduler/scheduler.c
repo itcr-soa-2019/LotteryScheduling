@@ -120,9 +120,6 @@ void initScheduler(int operationMode, int totalTickets, task_list_t *taskList) {
     // init array of partial pi values
     partialValues = calloc(sizeof(double), scheduler->taskList->size);
 
-    // initialize temporal list to store threads
-    initLists();
-
     // init seed to get different random numbers for winner ticket every time the program runs
     srand(time(NULL));
 

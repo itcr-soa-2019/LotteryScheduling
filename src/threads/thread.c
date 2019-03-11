@@ -5,7 +5,6 @@
 #define JB_SP 6
 #define JB_PC 7
 
-list_t *threads = NULL;
 unsigned int newId = 0;
 
 
@@ -21,16 +20,13 @@ address_t translate_address(address_t address) {
 
 // create a new thread and return the pid
 thread_t* createThread(void *function, long tickets, long workUnits, long cpuYield) {
-    if ( ! ( numNodes(threads) < MAX_THREADS ) ) {
-        return NULL;
-    }
-    
     thread_t *thread = malloc(sizeof(thread_t));
     thread->status = malloc(sizeof(state_t));
     thread->stack = malloc(STACK_SIZE);
     address_t sp, pc;
 
-    thread->id = newId++;    
+    newId++;
+    thread->id = newId;
     thread->tickets = tickets;
     thread->workUnits = workUnits;
     thread->cpuYieldPercentage = cpuYield;
@@ -53,10 +49,8 @@ thread_t* createThread(void *function, long tickets, long workUnits, long cpuYie
     (thread->jmpbuf->__jmpbuf)[JB_PC] = translate_address(pc);    
     sigemptyset(&thread->jmpbuf->__saved_mask);
     
-    printf("Thread created, id: %d\n", newId);
     return thread;
 }
-
 
 // Saves the thread execution context
 int saveThread(thread_t* thread) {
@@ -66,62 +60,4 @@ int saveThread(thread_t* thread) {
 // Resumes thread
 void Resume_Thread(thread_t* thread) {
     siglongjmp(thread->jmpbuf, 1);
-}
-
-// evaluates if the thread and list are not null 
-// in order to make succesfull apend on list
-int evalThreadAppend(thread_t *thread, list_t *list) {
-    if(NULL == thread) {
-        printf("\nThread is null, returning -1\n");
-        return -1;
-    }
-    if(NULL == list) {
-        printf("\nList is null, returning -1\n");
-        return -1;
-    }
-    return 1;
-}
-
-// add a thread to one of two lists used
-// threads and readyQ are used in the createThread function
-int appendThread(thread_t *thread, list_t *list) {
-    if ( ! evalThreadAppend(thread, list) == 1) {
-        return -1;
-    }
-
-    node_t *node = list->head;
-    node_t *new = malloc(sizeof(node_t));
-    new->thread = thread;
-    new->next = new->prev = NULL;
-    
-    if(NULL == node) {
-        list->head = new;
-    } else {
-        while(NULL != node->next) {
-            node = node->next;
-        }
-        node->next = new;
-        new->prev = node;
-    }
-
-    list->size++;
-    
-    printf("Success adding thread to list, returning %d\n", thread->status->id);    
-    return thread->status->id;
-}
-
-// return the number of threads contained in the thread list
-unsigned int numNodes(list_t *threads) {
-    if(NULL == threads) return 0;
-    return threads->size;
-}
-
-
-// initialize temporal list to store threads
-void initLists() {
-    threads = malloc(sizeof(list_t));    
-    threads->head = NULL;
-    threads->size = 0;
-    srand(time(NULL));
-    printf("Lists have been created\n");   
 }

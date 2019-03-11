@@ -31,5 +31,8 @@ struct execution
     double cpuYieldPercentage;
 };
 
+int getTotalTickets();
+
 void printExecution();
-struct execution InitializeExecution();
+
+struct execution initializeExecution();

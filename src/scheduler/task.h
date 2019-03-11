@@ -26,7 +26,7 @@ typedef struct task_list_t
 task_t* initTask(int id, int tickets, int workUnits, int quantumSize, double cpuYieldPercentage, double progress, thread_t *thread);
 
 // initialize new list of tasks
-task_list_t* initTaskList();
+task_list_t* initTaskList(void *function);
 
 // add new element to existing list of tasks
 int appendTask(task_t *task, task_list_t *list);
