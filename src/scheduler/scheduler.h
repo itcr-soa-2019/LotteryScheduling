@@ -15,7 +15,7 @@ typedef struct scheduler_t
 } scheduler_t;
 
 // A pointer to the current scheduler struct
-extern scheduler_t* scheduler;
+scheduler_t* scheduler;
 
 // Initialize and start scheduling tasks
 void initScheduler(int operationMode, int totalTickets, task_list_t *taskList);
