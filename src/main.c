@@ -105,8 +105,17 @@ int initGtkUI(int argc, char **argv)
     g_signal_connect (button, "clicked", G_CALLBACK (gtk_main_quit), NULL);
     GObject *progress2;
     progress2 = gtk_builder_get_object(builder, "progress_2");
-    gtk_widget_set_visible(GTK_WIDGET(progress2), 1); //Make it visible
-    gtk_progress_bar_set_fraction(GTK_PROGRESS_BAR(progress2), 0.50);
+
+        task_t *task = malloc(sizeof(task_t));
+        thread_t *thread = malloc(sizeof(thread_t));
+        thread->status->threadState = 1;
+        task->id = 2;
+        task->thread = thread;
+        task->workUnits = 4;
+        task->progress = 0.34;
+        update_thread(builder,task);
+       // piCalculation(task, stub_reporter); //executeTask(task);
+  
     
     // Sample hide some of the threads
     for(size_t i = 6; i < 12; i++)
@@ -123,5 +132,6 @@ int initGtkUI(int argc, char **argv)
  */
 int main(int argc, char **argv)
 {   
-    schedulerTester();
+    //schedulerTester();
+    initGtkUI(argc, argv);
 }

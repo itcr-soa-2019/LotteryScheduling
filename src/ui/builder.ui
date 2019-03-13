@@ -36,14 +36,16 @@
               <object class="GtkGrid">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="column_spacing">150</property>
+                <property name="column_spacing">144</property>
+                <property name="column_homogeneous">True</property>
                 <child>
                   <object class="GtkButton" id="start_scheduler">
-                    <property name="label" translatable="yes">Start Scheduler</property>
+                    <property name="label">gtk-execute</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
-                    <property name="image">image1</property>
+                    <property name="use_stock">True</property>
+                    <property name="always_show_image">True</property>
                   </object>
                   <packing>
                     <property name="left_attach">0</property>
@@ -52,11 +54,12 @@
                 </child>
                 <child>
                   <object class="GtkButton" id="exit_application">
-                    <property name="label" translatable="yes">Exit</property>
+                    <property name="label">gtk-quit</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
-                    <property name="image">image2</property>
+                    <property name="use_stock">True</property>
+                    <property name="always_show_image">True</property>
                   </object>
                   <packing>
                     <property name="left_attach">1</property>
@@ -108,7 +111,7 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkLabel" id="status_value">
+                  <object class="GtkLabel" id="status_value0">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="label" translatable="yes">Idle</property>
@@ -121,7 +124,6 @@
                 <child>
                   <object class="GtkProgressBar" id="progress_0">
                     <property name="can_focus">False</property>
-                    <property name="no_show_all">True</property>
                     <property name="hexpand">True</property>
                     <property name="show_text">True</property>
                     <property name="ellipsize">start</property>
@@ -190,7 +192,6 @@
                 <child>
                   <object class="GtkProgressBar" id="progress_1">
                     <property name="can_focus">False</property>
-                    <property name="no_show_all">True</property>
                     <property name="hexpand">True</property>
                     <property name="show_text">True</property>
                     <property name="ellipsize">start</property>
@@ -259,7 +260,6 @@
                 <child>
                   <object class="GtkProgressBar" id="progress_2">
                     <property name="can_focus">False</property>
-                    <property name="no_show_all">True</property>
                     <property name="hexpand">True</property>
                     <property name="show_text">True</property>
                     <property name="ellipsize">start</property>
@@ -328,7 +328,6 @@
                 <child>
                   <object class="GtkProgressBar" id="progress_3">
                     <property name="can_focus">False</property>
-                    <property name="no_show_all">True</property>
                     <property name="hexpand">True</property>
                     <property name="show_text">True</property>
                     <property name="ellipsize">start</property>
@@ -397,7 +396,6 @@
                 <child>
                   <object class="GtkProgressBar" id="progress_4">
                     <property name="can_focus">False</property>
-                    <property name="no_show_all">True</property>
                     <property name="hexpand">True</property>
                     <property name="show_text">True</property>
                     <property name="ellipsize">start</property>
@@ -466,7 +464,6 @@
                 <child>
                   <object class="GtkProgressBar" id="progress_5">
                     <property name="can_focus">False</property>
-                    <property name="no_show_all">True</property>
                     <property name="hexpand">True</property>
                     <property name="show_text">True</property>
                     <property name="ellipsize">start</property>
@@ -535,7 +532,6 @@
                 <child>
                   <object class="GtkProgressBar" id="progress_6">
                     <property name="can_focus">False</property>
-                    <property name="no_show_all">True</property>
                     <property name="hexpand">True</property>
                     <property name="show_text">True</property>
                     <property name="ellipsize">start</property>
@@ -604,7 +600,6 @@
                 <child>
                   <object class="GtkProgressBar" id="progress_7">
                     <property name="can_focus">False</property>
-                    <property name="no_show_all">True</property>
                     <property name="hexpand">True</property>
                     <property name="show_text">True</property>
                     <property name="ellipsize">start</property>
@@ -673,7 +668,6 @@
                 <child>
                   <object class="GtkProgressBar" id="progress_8">
                     <property name="can_focus">False</property>
-                    <property name="no_show_all">True</property>
                     <property name="hexpand">True</property>
                     <property name="show_text">True</property>
                     <property name="ellipsize">start</property>
@@ -742,7 +736,6 @@
                 <child>
                   <object class="GtkProgressBar" id="progress_9">
                     <property name="can_focus">False</property>
-                    <property name="no_show_all">True</property>
                     <property name="hexpand">True</property>
                     <property name="show_text">True</property>
                     <property name="ellipsize">start</property>
@@ -811,7 +804,6 @@
                 <child>
                   <object class="GtkProgressBar" id="progress_10">
                     <property name="can_focus">False</property>
-                    <property name="no_show_all">True</property>
                     <property name="hexpand">True</property>
                     <property name="show_text">True</property>
                     <property name="ellipsize">start</property>
@@ -880,7 +872,6 @@
                 <child>
                   <object class="GtkProgressBar" id="progress_11">
                     <property name="can_focus">False</property>
-                    <property name="no_show_all">True</property>
                     <property name="hexpand">True</property>
                     <property name="show_text">True</property>
                     <property name="ellipsize">start</property>
@@ -924,15 +915,6 @@
                     <property name="top_attach">0</property>
                     <property name="width">3</property>
                   </packing>
-                </child>
-                <child>
-                  <placeholder/>
-                </child>
-                <child>
-                  <placeholder/>
-                </child>
-                <child>
-                  <placeholder/>
                 </child>
               </object>
               <packing>
