@@ -18,6 +18,7 @@ void update_thread(GtkBuilder *builder, task_t *task) {
   char* statusValue = (char*) malloc(sizeof(char)*10);
   sprintf(status_name, "status_value%d", task->id);
   status = gtk_builder_get_object(builder, status_name);
+  // Just to get a string value from the status number
   switch (task->thread->status->threadState)
   {
     case 1:
