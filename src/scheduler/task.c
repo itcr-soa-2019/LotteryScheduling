@@ -28,7 +28,7 @@ task_list_t* initTaskList(void *function) {
     taskList->last = NULL;
     taskList->size = 0;
 
-    int tickets = 0; 
+    /*int tickets = 0; 
     int workUnits = 0;
     double cpuPerc = executor.cpuYieldPercentage;
     unsigned int quantum = executor.quantumSize;
@@ -40,7 +40,7 @@ task_list_t* initTaskList(void *function) {
         thread_t *thread = createThread(function, tickets, workUnits, cpuPerc);
         task_t* task = initTask(i, tickets, workUnits, quantum, cpuPerc, 0, thread);
         appendTask(task, taskList);
-    }
+    }*/
 
     return taskList;
 }

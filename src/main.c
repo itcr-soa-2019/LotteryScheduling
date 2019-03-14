@@ -52,6 +52,31 @@ void piCalcTester(){
     printf("PI:%f\n", (double)calculated_pi * 4.0);
 }
 
+void schedulerTesterWorkingExample() {
+    //create threads
+    thread_t *thread1 = createThread(runThread, 3, 3, 1);
+    thread_t *thread2 = createThread(runThread, 5, 1, 1); 
+    thread_t *thread3 = createThread(runThread, 1, 3, 1);  
+
+    //create task
+    /*el cpuYieldPercentage tiene que ser 1 hasta que correr los threads sirva y el progreso en el 
+    piCalc se retome después de un cambio de contexto. porque sino nunca se cumple la condición de task
+    completado del allocateNextTask()*/
+    task_t* test = initTask(1, 3, 3, 1, 1,  0, thread1); 
+    task_t* test2 = initTask(2, 5, 3, 1, 1, 0, thread2);
+    task_t* test3 = initTask(3, 1, 3, 1, 1, 0, thread3);
+
+    //create tasklist
+    task_list_t* testList = initTaskList(runThread);
+    appendTask(test, testList);
+    appendTask(test2, testList);
+    appendTask(test3, testList);
+
+    // start scheduling
+    initScheduler(1, 9, testList); // expropiative
+    //initScheduler(0, 9, testList); //non-expropiative
+}
+
 void schedulerTester() {
     //initialize config file
     struct execution exeInfo = initializeExecution();    
@@ -63,7 +88,7 @@ void schedulerTester() {
 
     //start scheduling
     int totalTickets = getTotalTickets();
-    //initScheduler(exeInfo.operationMode, totalTickets, tasks); 
+    initScheduler(exeInfo.operationMode, totalTickets, tasks); 
 }
 
 // Handler of the Start button clicked event
@@ -132,6 +157,6 @@ int initGtkUI(int argc, char **argv)
  */
 int main(int argc, char **argv)
 {   
-    //schedulerTester();
-    initGtkUI(argc, argv);
+    schedulerTesterWorkingExample(); //para que sirva, hay que comentar la creación de threads en initTaskList()
+    //initGtkUI(argc, argv);
 }

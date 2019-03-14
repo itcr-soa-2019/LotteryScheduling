@@ -57,8 +57,7 @@ void allocateNextTask() {
             printf("SAVE %p.\n", scheduler->currentTask->thread);
             saveThread(scheduler->currentTask->thread);
         } 
-
-       // printf("paso el safe.\n");
+    
         // 2. get winner ticket
         int winnerTicket = getWinnerTicket(scheduler->totalTickets);
     
@@ -89,21 +88,6 @@ void allocateNextTask() {
     } 
 }
 
-// This method is intercepted by allocateNextTask() when the timer alarm completes.
-// This loop is required because during this time alarms for the expropiative mode will be created. 
-void executeTasks() {
-    printf("ENtroooo al ciclo");
-    if (scheduler->taskList == NULL ) {
-        printf("No tasks to schedule.");
-        exit(0);
-    }
-    // keep processing while there are still tasks to complete
-    while (scheduler->taskList->size != 0) {
-        // ToDo: agregar validación en piCalc para que no ejecute nada si el progreso del task ya se completó, para que le de tiempo a la tarea de completar su quantum en este ciclo.
-        printf("Executing Task %d.\n", scheduler->currentTask->id);
-    }
-}
-
 // Used only for the non expropiative mode. 
 // Progress is updated for the current task by piCalc, every time a workunit is completed.
 void verifyCurrentThreadProgress(double progress){
@@ -117,7 +101,7 @@ void verifyCurrentThreadProgress(double progress){
 
 void runThread() {
     while(1) {
-        printf("TEST %d\n", scheduler->currentTask->id);
+        printf("Executing Task %d.\n", scheduler->currentTask->id);
         piCalculation(scheduler->currentTask, verifyCurrentThreadProgress);
     }
 }
