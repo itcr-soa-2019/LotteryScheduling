@@ -42,6 +42,7 @@ void deallocateCurrentTask() {
 // Schedules a new task to be executed.
 // In expropiative mode, this method is triggered when the timer alarm completes. 
 void allocateNextTask() { 
+    
     // check if progress is 100% and delete from task list
     if (scheduler->currentTask != NULL && scheduler->currentTask->progress == 1) {
         printf("Task COMPLETED-> %d.\n", scheduler->currentTask->id);
@@ -52,9 +53,12 @@ void allocateNextTask() {
     if (scheduler->taskList->size > 0) {
         // 1. before selecting a new current task, save the thread context of the previous
         if (scheduler->currentTask != NULL) {
+            //printf("progress: %f, id: %d\n", scheduler->currentTask->progress, scheduler->currentTask->thread->id);
             printf("SAVE %p.\n", scheduler->currentTask->thread);
-            //saveThread(scheduler->currentTask->thread);
+            saveThread(scheduler->currentTask->thread);
         } 
+
+       // printf("paso el safe.\n");
         // 2. get winner ticket
         int winnerTicket = getWinnerTicket(scheduler->totalTickets);
     
@@ -63,23 +67,32 @@ void allocateNextTask() {
 
         printf("Will now run Task-> %d.\n", scheduler->currentTask->id);
 
-        // 4. resume thread to start its execution
-        printf("RESUME %p.\n", scheduler->currentTask->thread);
-        runThread(); //borrar esto (simula ejecucion del hilo)
-        //Resume_Thread(scheduler->currentTask->thread);
-
         // set new alarm for the selected current task
         if (scheduler->operationMode == 1) {
             setTimerAlarm(scheduler->currentTask->quantumSize);
         }
+
+        // 4. resume thread to start its execution
+        printf("RESUME %p.\n", scheduler->currentTask->thread);
+        Resume_Thread(scheduler->currentTask->thread);
     } else {
         printf("No tasks left to schedule.\n");
+
+        for(int x= 0; x< 2; x++)
+        {
+            calculated_pi += partialValues[x];
+            printf("%f\n",partialValues[x]);
+        }
+    printf("PI:%f\n", (double)calculated_pi * 4.0);
+
+        exit(0);
     } 
 }
 
 // This method is intercepted by allocateNextTask() when the timer alarm completes.
 // This loop is required because during this time alarms for the expropiative mode will be created. 
 void executeTasks() {
+    printf("ENtroooo al ciclo");
     if (scheduler->taskList == NULL ) {
         printf("No tasks to schedule.");
         exit(0);
@@ -96,14 +109,17 @@ void executeTasks() {
 void verifyCurrentThreadProgress(double progress){
     if (scheduler->operationMode == 0) {
         printf("CurrentTask progress: %f\n", scheduler->currentTask->progress);
-        if (scheduler->currentTask->progress >= scheduler->currentTask->cpuYieldPercentage) {
+        if (scheduler->currentTask->progress >= scheduler->currentTask->cpuYieldPercentage) { //el CPUYield percentage tiene que tomar en cuenta las diferentes iteraciones del progress, sino en la segunda siempre se va a cumplir esta condicion
             allocateNextTask();
         }   
     }
 }
 
 void runThread() {
-    piCalculation(scheduler->currentTask, verifyCurrentThreadProgress);
+    while(1) {
+        printf("TEST %d\n", scheduler->currentTask->id);
+        piCalculation(scheduler->currentTask, verifyCurrentThreadProgress);
+    }
 }
 
 void initScheduler(int operationMode, int totalTickets, task_list_t *taskList) {
@@ -130,7 +146,9 @@ void initScheduler(int operationMode, int totalTickets, task_list_t *taskList) {
     allocateNextTask(); //to select the first task to run
 
     if (scheduler->operationMode == 1) {
-        executeTasks(); 
+        //executeTasks(); 
     }
+
+    printf("FINAAAAL");
 }
 

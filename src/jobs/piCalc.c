@@ -14,7 +14,7 @@ void piCalculation(task_t *task, void (*reportProgress)(double)) {
     int id = task->thread->id;
     int workUnits = task->workUnits;
     double startPoint = id * workUnits * TermsPerUnit;
-    for(int i = 0; i < workUnits;  i++)
+    for(int i = 0; i < workUnits;  i++) //AGREGAR validacion de si se completaron los workunits no hacer nada mas
     {
         calculateWorkUnit((i*TermsPerUnit)+startPoint, &partialSum);
         double progress = ((double)i + 1.0) / (double) workUnits; // Calculates the current progress for this task
