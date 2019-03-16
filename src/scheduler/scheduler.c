@@ -45,7 +45,7 @@ void allocateNextTask() {
     
     // check if progress is 100% and delete from task list
     if (scheduler->currentTask != NULL && scheduler->currentTask->progress == 1) {
-        printf("Task COMPLETED-> %d.\n", scheduler->currentTask->id);
+        printf("Task COMPLETED-> %d.\n", scheduler->currentTask->thread->id);
         deallocateCurrentTask();
     }
 
@@ -60,12 +60,11 @@ void allocateNextTask() {
     
         // 2. get winner ticket
         int winnerTicket = getWinnerTicket(scheduler->totalTickets);
-        printf("\nWINNERTICKET: %d\n", winnerTicket);
     
         // 3. find winner task in list and assign new current task
         scheduler->currentTask = getWinnerTask(scheduler->taskList, winnerTicket);
 
-        printf("Will now run Task-> %d.\n", scheduler->currentTask->id);
+        printf("Will now run Task-> %d.\n", scheduler->currentTask->thread->id);
 
         // set new alarm for the selected current task
         if (scheduler->operationMode == 1) {
@@ -93,8 +92,9 @@ void allocateNextTask() {
 // Progress is updated for the current task by piCalc, every time a workunit is completed.
 void verifyCurrentThreadProgress(double progress){
     if (scheduler->operationMode == 0) {
-        printf("CurrentTask progress: %f\n", scheduler->currentTask->progress);
+        printf("Task %d progress: %f\n", scheduler->currentTask->thread->id, scheduler->currentTask->progress);
         if (scheduler->currentTask->progress >= scheduler->currentTask->cpuYieldPercentage) { //el CPUYield percentage tiene que tomar en cuenta las diferentes iteraciones del progress, sino en la segunda siempre se va a cumplir esta condicion
+            scheduler->currentTask->cpuYieldPercentage += scheduler->currentTask->thread->cpuYieldPercentage;
             allocateNextTask();
         }   
     }
@@ -102,7 +102,7 @@ void verifyCurrentThreadProgress(double progress){
 
 void runThread() {
     while(1) {
-        printf("Executing Task %d.\n", scheduler->currentTask->id);
+        printf("Executing Task %d.\n", scheduler->currentTask->thread->id);
         piCalculation(scheduler->currentTask, verifyCurrentThreadProgress);
     }
 }

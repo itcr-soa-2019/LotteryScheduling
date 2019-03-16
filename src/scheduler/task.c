@@ -1,9 +1,8 @@
 #include "task.h"
 #include "../execution/execution.h"
 
-task_t* initTask(int id, int tickets, int workUnits, int quantumSize, double cpuYieldPercentage, double progress, thread_t *thread) {
+task_t* initTask(int tickets, int workUnits, int quantumSize, double cpuYieldPercentage, double progress, thread_t *thread) {
     task_t *task = malloc(sizeof(task_t));
-    task->id = id;
     task->tickets = tickets;
     task->workUnits = workUnits;
     task->quantumSize = quantumSize;
@@ -38,7 +37,7 @@ task_list_t* initTaskList(void *function) {
         tickets = executor.tickets[i];
         workUnits = executor.workUnits[i];
         thread_t *thread = createThread(function, tickets, workUnits, cpuPerc);
-        task_t *task = initTask(thread->id, tickets, workUnits, quantum, cpuPerc, 0, thread);
+        task_t* task = initTask(tickets, workUnits, quantum, cpuPerc, 0, thread);
         appendTask(task, taskList);
     }
 
@@ -54,7 +53,7 @@ void printTaskList(task_list_t *task_list)
     task_t *current = task_list->head;
     while (current != NULL)
     {
-        printf("Task %d = ", current->id);
+        printf("Task %d = ", current->thread->id);
         printf("Thread %d, ", current->thread->id);
         printf("Tickets %d, ", current->tickets);
         printf("WorkUnits %d, ", current->workUnits);
@@ -117,8 +116,6 @@ int removeTask(task_t *task, task_list_t *list) {
         current = current->next;
         i++;
     }
-    printf("\nTaskId: %d\n", task->id);
-    printTaskList(list);
     printf("Error while removing unexistent task from task_list_t.");
     return -1;
 }

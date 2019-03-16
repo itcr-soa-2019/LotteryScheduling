@@ -5,7 +5,6 @@
 
 typedef struct task_t
 {
-   int id;
    int tickets;
    int workUnits;
    int quantumSize; // millisecs of execution given in expropiative mode 
@@ -23,7 +22,7 @@ typedef struct task_list_t
 } task_list_t;
 
 // initialize task element
-task_t* initTask(int id, int tickets, int workUnits, int quantumSize, double cpuYieldPercentage, double progress, thread_t *thread);
+task_t* initTask(int tickets, int workUnits, int quantumSize, double cpuYieldPercentage, double progress, thread_t *thread);
 
 // initialize new list of tasks
 task_list_t* initTaskList(void *function);

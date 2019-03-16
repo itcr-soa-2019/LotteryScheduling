@@ -19,7 +19,7 @@ address_t translate_address(address_t address) {
 }
 
 // create a new thread and return the pid
-thread_t* createThread(void *function, long tickets, long workUnits, long cpuYield) {
+thread_t* createThread(void *function, long tickets, long workUnits, double cpuYield) {
     thread_t *thread = malloc(sizeof(thread_t));
     thread->status = malloc(sizeof(state_t));
     thread->stack = malloc(STACK_SIZE);
