@@ -1,12 +1,14 @@
 # LotteryScheduling
+Instituto Tecnológico de Costa Rica
+Sistemas Operativos Avanzados, 2019
 Proyecto 1: "Lottery Scheduling"
 
-Dentro de la carpeta 'src' se puede utilizar el siguiente comando para compilar y
-ejecutar desde terminal:
 
-  - gcc jobs/jobs.c jobs/piCalc.c threads/thread.c execution/execution.c lottery/lottery.c main.c -o main -lm
-  - ./main
+### Compilación
+Para compilar el programa se debe ejecutar el comando make en la raíz del proyecto.
 
-Se le pide al usuario en la terminal si desea ejecutar desde archivo de configuracion o desde el teclado.
+El make va a generar un archivo lottery dentro de la carpeta bin.
 
-Por motivos de prueba no se crean mas de 10 threads (MAX_THREADS).
+### Ejecución
+Para ejecutar el programa se debe ingresar a la carpeta bin y ejecutar el comando ./lottery
+Si esto se realiza fuera de bin el ejecutable lottery no encuentra el archivo execution.conf y no es posible cargar desde el archivo la configuración de hilos y su trabajo.
