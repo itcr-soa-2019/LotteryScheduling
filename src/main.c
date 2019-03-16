@@ -77,7 +77,7 @@ void schedulerTesterWorkingExample() {
     initScheduler(0, 9, testList); //non-expropiative
 }
 
-void schedulerTester() {
+void schedulerTesterFromConfigFile() {
     //initialize config file
     struct execution exeInfo = initializeExecution();    
     printExecution();
@@ -88,7 +88,6 @@ void schedulerTester() {
 
     //start scheduling
     int totalTickets = getTotalTickets();
-
     initScheduler(exeInfo.operationMode, totalTickets, tasks); 
 }
 
@@ -157,7 +156,7 @@ int initGtkUI(int argc, char **argv)
  */
 int main(int argc, char **argv)
 {   
-    schedulerTester();
+    schedulerTesterFromConfigFile();
     //schedulerTesterWorkingExample(); //para que sirva, hay que comentar la creación de threads en initTaskList()
     //initGtkUI(argc, argv);
 }
