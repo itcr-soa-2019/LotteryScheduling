@@ -28,19 +28,19 @@ task_list_t* initTaskList(void *function) {
     taskList->last = NULL;
     taskList->size = 0;
 
-    /*int tickets = 0; 
+    int tickets = 0; 
     int workUnits = 0;
     double cpuPerc = executor.cpuYieldPercentage;
     unsigned int quantum = executor.quantumSize;
     
-    for(int i = 1; i <= executor.numThreads; i++)
+    for(int i = 0; i < executor.numThreads; i++)
     {
         tickets = executor.tickets[i];
         workUnits = executor.workUnits[i];
         thread_t *thread = createThread(function, tickets, workUnits, cpuPerc);
-        task_t* task = initTask(i, tickets, workUnits, quantum, cpuPerc, 0, thread);
+        task_t *task = initTask(thread->id, tickets, workUnits, quantum, cpuPerc, 0, thread);
         appendTask(task, taskList);
-    }*/
+    }
 
     return taskList;
 }
@@ -51,21 +51,18 @@ task_list_t* initTaskList(void *function) {
 void printTaskList(task_list_t *task_list)
 {
     printf("\n***************** TASKS LIST *****************\n");
-
-    task_t* current = task_list->head;
-
+    task_t *current = task_list->head;
     while (current != NULL)
     {
-        printf("Tarea #%d = ", current->id);
-        printf("THREAD:%d, ", current->thread->id);
-        printf("Tickets:%d, ", current->tickets);
-        printf("WorkUnits:%d, ", current->workUnits);
-        printf("QuantumSize:%d, ", current->quantumSize);
-        printf("Progress:%d, ", current->progress);
-        printf("CpuYieldPerc:%lf \n", current->cpuYieldPercentage);        
-
+        printf("Task %d = ", current->id);
+        printf("Thread %d, ", current->thread->id);
+        printf("Tickets %d, ", current->tickets);
+        printf("WorkUnits %d, ", current->workUnits);
+        printf("Quantum %d, ", current->quantumSize);
+        printf("Progress %d, ", current->progress);
+        printf("CpuYield %lf \n", current->cpuYieldPercentage);
         current = current->next;
-    }    
+    }
 }
 
 int appendTask(task_t *task, task_list_t *list) {
@@ -81,8 +78,9 @@ int appendTask(task_t *task, task_list_t *list) {
     } else {
         list->last->next = task;
         list->last = task;
-    }
-    list->size ++;
+    }    
+
+    list->size++;
     return 0;
 }
 
@@ -119,6 +117,8 @@ int removeTask(task_t *task, task_list_t *list) {
         current = current->next;
         i++;
     }
+    printf("\nTaskId: %d\n", task->id);
+    printTaskList(list);
     printf("Error while removing unexistent task from task_list_t.");
     return -1;
 }

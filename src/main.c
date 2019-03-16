@@ -83,11 +83,15 @@ void schedulerTester() {
     printExecution();
 
     //create tasklist, threads and tasks
-    task_list_t* tasks = initTaskList(piCalculation);    
+    task_list_t* tasks = initTaskList(runThread);
     printTaskList(tasks);
 
     //start scheduling
     int totalTickets = getTotalTickets();
+
+    printf("Size: %d \n", tasks->size);   
+    printf("Tickets: %d \n", totalTickets);
+
     initScheduler(exeInfo.operationMode, totalTickets, tasks); 
 }
 
@@ -157,6 +161,7 @@ int initGtkUI(int argc, char **argv)
  */
 int main(int argc, char **argv)
 {   
-    schedulerTesterWorkingExample(); //para que sirva, hay que comentar la creación de threads en initTaskList()
+    schedulerTester();
+    //schedulerTesterWorkingExample(); //para que sirva, hay que comentar la creación de threads en initTaskList()
     //initGtkUI(argc, argv);
 }

@@ -60,6 +60,7 @@ void allocateNextTask() {
     
         // 2. get winner ticket
         int winnerTicket = getWinnerTicket(scheduler->totalTickets);
+        printf("\nWINNERTICKET: %d\n", winnerTicket);
     
         // 3. find winner task in list and assign new current task
         scheduler->currentTask = getWinnerTask(scheduler->taskList, winnerTicket);
@@ -82,7 +83,7 @@ void allocateNextTask() {
             calculated_pi += partialValues[x];
             printf("%f\n",partialValues[x]);
         }
-    printf("PI:%f\n", (double)calculated_pi * 4.0);
+        printf("PI:%f\n", (double)calculated_pi * 4.0);
 
         exit(0);
     } 

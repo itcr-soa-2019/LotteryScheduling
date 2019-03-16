@@ -110,15 +110,17 @@ void printExecution() {
     printf("Operation Mode: %d\n", executor.operationMode);
 	printf("THREADS: %ld\n", executor.numThreads);
     printf("TICKETS: ");    
-    for(i = 0; i < executor.numThreads; i++)
+    for(i = 0; i < executor.numThreads-1; i++)
     {
-        printf("Thread %d:%ld, ", i+1, executor.tickets[i]);
+        printf("%ld, ", executor.tickets[i]);
     }
+    printf("%ld. ", executor.tickets[i]);
     printf("\nWORK: ");
-    for(i = 0; i < executor.numThreads; i++)
+    for(i = 0; i < executor.numThreads-1; i++)
     {
-        printf("Thread %d:%ld, ", i+1, executor.workUnits[i]);
+        printf("%ld, ", executor.workUnits[i]);
     }
+    printf("%ld. ", executor.workUnits[i]);
 	printf("\nQuantum Size: %d\n", executor.quantumSize);
     printf("CPU Percentage: %lf\n", executor.cpuYieldPercentage);
 }
