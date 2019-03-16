@@ -24,7 +24,6 @@ void piCalculation(task_t *task, void (*reportProgress)(double)) {
     partialValues[id]=partialSum;
 }
 
-
 /**
  * Calculates a single workUnit.
  * A Work unit is equivalent to 50 terms of the 

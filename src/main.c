@@ -54,17 +54,17 @@ void piCalcTester(){
 
 void schedulerTesterWorkingExample() {
     //create threads
-    thread_t *thread1 = createThread(runThread, 3, 3, 1);
-    thread_t *thread2 = createThread(runThread, 5, 1, 1); 
-    thread_t *thread3 = createThread(runThread, 1, 3, 1);  
+    thread_t *thread1 = createThread(runThread, 3, 3, 0.3);
+    thread_t *thread2 = createThread(runThread, 5, 1, 0.3); 
+    thread_t *thread3 = createThread(runThread, 1, 3, 0.3);  
 
     //create task
     /*el cpuYieldPercentage tiene que ser 1 hasta que correr los threads sirva y el progreso en el 
     piCalc se retome después de un cambio de contexto. porque sino nunca se cumple la condición de task
     completado del allocateNextTask()*/
-    task_t* test = initTask(1, 3, 3, 1, 1,  0, thread1); 
-    task_t* test2 = initTask(2, 5, 3, 1, 1, 0, thread2);
-    task_t* test3 = initTask(3, 1, 3, 1, 1, 0, thread3);
+    task_t* test = initTask(3, 3, 1, 0.3,  0, thread1); 
+    task_t* test2 = initTask(5, 6, 1, 0.3, 0, thread2);
+    task_t* test3 = initTask(1, 6, 1, 0.3, 0, thread3);
 
     //create tasklist
     task_list_t* testList = initTaskList(runThread);
@@ -73,8 +73,8 @@ void schedulerTesterWorkingExample() {
     appendTask(test3, testList);
 
     // start scheduling
-    initScheduler(1, 9, testList); // expropiative
-    //initScheduler(0, 9, testList); //non-expropiative
+    //initScheduler(1, 9, testList); // expropiative
+    initScheduler(0, 9, testList); //non-expropiative
 }
 
 void schedulerTester() {
@@ -134,7 +134,6 @@ int initGtkUI(int argc, char **argv)
         task_t *task = malloc(sizeof(task_t));
         thread_t *thread = malloc(sizeof(thread_t));
         thread->status->threadState = 1;
-        task->id = 2;
         task->thread = thread;
         task->workUnits = 4;
         task->progress = 0.34;

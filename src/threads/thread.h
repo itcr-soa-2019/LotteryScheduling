@@ -48,14 +48,14 @@ typedef struct thread_t
    state_t *status;
    long tickets; //podemos borrar esto?
    long workUnits; //podemos borrar esto?
-   double cpuYieldPercentage; //podemos borrar esto?
+   double cpuYieldPercentage; // This field is required to do a check when running scheduler in non expropiative mode.
    sigjmp_buf jmpbuf;
 } thread_t;
 
 
 // Creates a new thread with f() being its entry point. 
 // The function returns the created thread id (>= 0) or ‐1 to indicate failure.
-thread_t* createThread(void *function, long tickets, long workUnits, long cpuYield);
+thread_t* createThread(void *function, long tickets, long workUnits, double cpuYield);
 
 // Saves the thread execution context
 int saveThread(thread_t* thread);

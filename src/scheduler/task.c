@@ -1,9 +1,8 @@
 #include "task.h"
 #include "../execution/execution.h"
 
-task_t* initTask(int id, int tickets, int workUnits, int quantumSize, double cpuYieldPercentage, double progress, thread_t *thread) {
+task_t* initTask(int tickets, int workUnits, int quantumSize, double cpuYieldPercentage, double progress, thread_t *thread) {
     task_t *task = malloc(sizeof(task_t));
-    task->id = id;
     task->tickets = tickets;
     task->workUnits = workUnits;
     task->quantumSize = quantumSize;
@@ -38,7 +37,7 @@ task_list_t* initTaskList(void *function) {
         tickets = executor.tickets[i];
         workUnits = executor.workUnits[i];
         thread_t *thread = createThread(function, tickets, workUnits, cpuPerc);
-        task_t* task = initTask(i, tickets, workUnits, quantum, cpuPerc, 0, thread);
+        task_t* task = initTask(tickets, workUnits, quantum, cpuPerc, 0, thread);
         appendTask(task, taskList);
     }*/
 
@@ -56,7 +55,7 @@ void printTaskList(task_list_t *task_list)
 
     while (current != NULL)
     {
-        printf("Tarea #%d = ", current->id);
+        printf("Tarea #%d = ", current->thread->id);
         printf("THREAD:%d, ", current->thread->id);
         printf("Tickets:%d, ", current->tickets);
         printf("WorkUnits:%d, ", current->workUnits);
