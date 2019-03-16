@@ -16,7 +16,7 @@ Integrantes: Fabiola Espinoza
 			 Esteban Leandro
 Proyecto 1: Lottery Scheduling */
 
-#include "lottery/lottery.h"
+#include "execution/execution.h"
 #include "jobs/piCalc.h"
 #include "scheduler/scheduler.h"
 #include "ui/ui_functions.h"
@@ -95,7 +95,6 @@ void schedulerTesterFromConfigFile() {
 void start_application() {    
     piCalcTester();
     printExecution();
-    initLotterySchedule(runThread);
 }
 
 int initGtkUI(int argc, char **argv)

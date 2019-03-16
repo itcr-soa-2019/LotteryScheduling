@@ -138,10 +138,10 @@ int getTotalTickets(){
 }
 
 /**
- * Initial configuration, could be loaded from a
- * configuration file or from the GTK GUI (temp keyboard)
+ * Initial configuration, could be used for development mode
+ * to test reading from keyboard or file
  */
-struct execution initializeExecution(){
+struct execution testInitializeExecution(){
     int mode;
     printf("Initialize Lottery: \n[1] Keyboard [2] Config File: ");
     scanf("%d", &mode);
@@ -157,5 +157,14 @@ struct execution initializeExecution(){
             printf("Not a valid execution mode, try again. \n");
             break;
     }
+    return executor;
+}
+
+/**
+ * Initial configuration, would be loaded 
+ * from the GTK GUI
+ */
+struct execution initializeExecution(){    
+    executor = readFromFile(FILENAME);
     return executor;
 }
