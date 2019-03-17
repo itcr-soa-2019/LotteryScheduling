@@ -30,11 +30,10 @@ void piCalculation(task_t *task, void (*reportProgress)(double)) {
  * geometric series.
  */
 void calculateWorkUnit(int startIndex, double *partialSum) {
-    printf("StartIndex: %d\n", startIndex);
+    //printf("StartIndex: %d\n", startIndex);
     for(int i = startIndex; i < (startIndex + TermsPerUnit); i++){        
         double v = pow(-1.0, (double) (i)) / (2.0*(double)(i)+1.0);
         *partialSum += v;
     }
-    printf("Sum: %f\n", partialSum);
 }
 

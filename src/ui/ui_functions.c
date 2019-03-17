@@ -32,7 +32,7 @@ void update_thread(GtkBuilder *builder, task_t *task) {
       statusValue = "Idle";
       break;
   }
-  // gtk_label_set_text(GTK_LABEL(status), statusValue);
+  gtk_label_set_text(GTK_LABEL(status), statusValue);
   //progress_1
   char* progress_name = (char*) malloc(sizeof(char)*11);
   sprintf(progress_name, "progress_%d", task->thread->id);

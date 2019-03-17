@@ -42,7 +42,7 @@ void deallocateCurrentTask() {
 // Schedules a new task to be executed.
 // In expropiative mode, this method is triggered when the timer alarm completes.
 void allocateNextTask() {
-
+     printf("Task allocated");
     // check if progress is 100% and delete from task list
     if (scheduler->currentTask != NULL && scheduler->currentTask->progress == 1) {
         printf("Task COMPLETED-> %d.\n", scheduler->currentTask->thread->id);
@@ -94,7 +94,6 @@ void allocateNextTask() {
         printf("PI:%f\n", pi);
         update_pi_value(builder, pi);
         while(1){
-            printf("Done");
         }
         exit(0);
     }

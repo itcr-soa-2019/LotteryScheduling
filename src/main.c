@@ -123,7 +123,6 @@ void hideUnusedThreadsUI(long numThreads){
         printf("Hide Thread: %ld", i);
         hide_thread(builder, i);
     }  
-    update_pi_value(builder, 3.14);
     while (g_main_context_iteration(NULL, FALSE));
 }
 
