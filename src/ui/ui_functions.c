@@ -39,7 +39,8 @@ void update_thread(GtkBuilder *builder, task_t *task) {
   progress = gtk_builder_get_object(builder, progress_name);
   gtk_widget_set_visible(GTK_WIDGET(progress), 1); //Make it visible
   gtk_progress_bar_set_fraction(GTK_PROGRESS_BAR(progress), task->progress);
-  gtk_main_iteration();
+  while(gtk_events_pending())
+	gtk_main_iteration();
   gdk_threads_leave();
 }
 
@@ -47,7 +48,9 @@ void update_pi_value(GtkBuilder *builder, double piValue) {
   GObject *piLabel;
   char calculatedPI[200];
   sprintf(calculatedPI, "%2.13f", piValue);
+  printf(calculatedPI);
   piLabel = gtk_builder_get_object(builder, "label_pi_value");
-  gtk_label_set_text (GTK_LABEL(piLabel),calculatedPI);
-  gtk_main_iteration();
+  gtk_label_set_text (GTK_LABEL(piLabel), calculatedPI);
+  while(gtk_events_pending())
+	gtk_main_iteration();
 }

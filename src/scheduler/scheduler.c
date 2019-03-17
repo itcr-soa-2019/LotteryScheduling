@@ -47,7 +47,7 @@ void allocateNextTask() {
     if (scheduler->currentTask != NULL && scheduler->currentTask->progress == 1) {
         printf("Task COMPLETED-> %d.\n", scheduler->currentTask->thread->id);
         scheduler->currentTask->thread->status->threadState = 4;
-      //  update_thread(builder,scheduler->currentTask);
+        update_thread(builder,scheduler->currentTask);
         deallocateCurrentTask();
     }
 
@@ -58,7 +58,7 @@ void allocateNextTask() {
             //printf("progress: %f, id: %d\n", scheduler->currentTask->progress, scheduler->currentTask->thread->id);
             printf("SAVE %p.\n", scheduler->currentTask->thread);
             scheduler->currentTask->thread->status->threadState = 0; // Idle
-         //   update_thread(builder,scheduler->currentTask);
+            update_thread(builder,scheduler->currentTask);
             saveThread(scheduler->currentTask->thread);
         }
 
@@ -71,7 +71,7 @@ void allocateNextTask() {
         printf("Will now run Task-> %d.\n", scheduler->currentTask->thread->id);
 
         scheduler->currentTask->thread->status->threadState = 1; // Running
-        //update_thread(builder,scheduler->currentTask);
+        update_thread(builder,scheduler->currentTask);
 
         // set new alarm for the selected current task
         if (scheduler->operationMode == 1) {
