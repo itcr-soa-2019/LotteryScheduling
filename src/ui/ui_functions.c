@@ -18,6 +18,7 @@ void update_thread(GtkBuilder *builder, task_t *task) {
   char* status_name = (char*) malloc(sizeof(char)*14);
   char* statusValue = (char*) malloc(sizeof(char)*10);
   sprintf(status_name, "status_value%d", task->thread->id);
+  printf("Updating Label: %s", status_name);
   status = gtk_builder_get_object(builder, status_name);
   // Just to get a string value from the status number
   switch (task->thread->status->threadState)
@@ -37,6 +38,7 @@ void update_thread(GtkBuilder *builder, task_t *task) {
   char* progress_name = (char*) malloc(sizeof(char)*11);
   sprintf(progress_name, "progress_%d", task->thread->id);
   progress = gtk_builder_get_object(builder, progress_name);
+  printf("Updating Progress: %s", progress_name);
   gtk_widget_set_visible(GTK_WIDGET(progress), 1); //Make it visible
   gtk_progress_bar_set_fraction(GTK_PROGRESS_BAR(progress), task->progress);
   while(gtk_events_pending())

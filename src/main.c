@@ -108,7 +108,7 @@ worker (gpointer data)
 // Handler of the Start button clicked event
 void start_application() {  
     GThread    *thread;
-    g_timeout_add (100, update_progress_in_timeout, NULL);
+   // g_timeout_add (100, update_progress_in_timeout, NULL);
     thread = g_thread_new ("worker", worker, NULL);
     g_thread_unref (thread);
     printf("Scheduling Done");
