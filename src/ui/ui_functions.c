@@ -11,7 +11,6 @@ void hide_thread(GtkBuilder *builder, int index){
 
 // Update the ui widget according to a task 
 void update_thread(GtkBuilder *builder, task_t *task) {
-  gdk_threads_enter ();
   GObject *status;
   GObject *progress;
   //status_value0
@@ -43,7 +42,6 @@ void update_thread(GtkBuilder *builder, task_t *task) {
   gtk_progress_bar_set_fraction(GTK_PROGRESS_BAR(progress), task->progress);
   while(gtk_events_pending())
 	gtk_main_iteration();
-  gdk_threads_leave();
 }
 
 void update_pi_value(GtkBuilder *builder, double piValue) {

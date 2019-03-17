@@ -2,7 +2,7 @@
 #include "../execution/execution.h"
 
 task_t* initTask(int tickets, int workUnits, int quantumSize, double cpuYieldPercentage, double progress, thread_t *thread) {
-    task_t *task = malloc(sizeof(task_t));
+    task_t *task = calloc(1,sizeof(task_t));
     task->tickets = tickets;
     task->workUnits = workUnits;
     task->quantumSize = quantumSize;
