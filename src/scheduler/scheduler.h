@@ -14,11 +14,11 @@ typedef struct scheduler_t
    int totalTickets;
    int totalThreads;
    task_list_t *taskList;
-   task_t *currentTask; // task being executed
+   volatile task_t *currentTask; // task being executed
 } scheduler_t;
 
 // A pointer to the current scheduler sctruct
-scheduler_t* scheduler;
+volatile scheduler_t* scheduler;
 
 // Initialize and start scheduling tasks
 void initScheduler(int operationMode, int totalTickets, int numThreads, task_list_t *taskList);

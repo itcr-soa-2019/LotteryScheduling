@@ -46,8 +46,9 @@ void allocateNextTask() {
     // check if progress is 100% and delete from task list
     if (scheduler->currentTask != NULL && scheduler->currentTask->progress == 1) {
         printf("Task COMPLETED-> %d.\n", scheduler->currentTask->thread->id);
-        scheduler->currentTask->thread->status->threadState = 4;
-        update_thread(builder,scheduler->currentTask);
+        if(scheduler->operationMode == 0){
+        update_thread(builder,scheduler->currentTask->thread->id,4,1.0);
+        }
         deallocateCurrentTask();
     }
 
@@ -57,8 +58,9 @@ void allocateNextTask() {
         if (scheduler->currentTask != NULL) {
             //printf("progress: %f, id: %d\n", scheduler->currentTask->progress, scheduler->currentTask->thread->id);
             printf("SAVE %p.\n", scheduler->currentTask->thread);
-            scheduler->currentTask->thread->status->threadState = 0; // Idle
-            update_thread(builder,scheduler->currentTask);
+            if(scheduler->operationMode == 0){
+                update_thread(builder,scheduler->currentTask->thread->id,0,scheduler->currentTask->progress);
+            }
             saveThread(scheduler->currentTask->thread);
         }
 
@@ -68,11 +70,11 @@ void allocateNextTask() {
         // 3. find winner task in list and assign new current task
         scheduler->currentTask = getWinnerTask(scheduler->taskList, winnerTicket);
 
-        printf("Will now run Task-> %d.\n", scheduler->currentTask->thread->id);
-
-        scheduler->currentTask->thread->status->threadState = 1; // Running
-        update_thread(builder,scheduler->currentTask);
-
+        if(scheduler->operationMode == 0){
+            printf("Will now run Task-> %d.\n", scheduler->currentTask->thread->id);
+            update_thread(builder,scheduler->currentTask->thread->id,1,scheduler->currentTask->progress);
+        }
+      
         // set new alarm for the selected current task
         if (scheduler->operationMode == 1) {
             setTimerAlarm(scheduler->currentTask->quantumSize);
@@ -92,8 +94,11 @@ void allocateNextTask() {
         }
         double pi = ((double)calculated_pi * 4.0);
         printf("PI:%f\n", pi);
+        //if(scheduler->operationMode == 0){
         update_pi_value(builder, pi);
+        //}
         while(1){
+            update_pi_value(builder, pi);
         }
         exit(0);
     }
