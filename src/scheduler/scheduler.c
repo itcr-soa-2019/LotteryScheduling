@@ -94,11 +94,10 @@ void allocateNextTask() {
         }
         double pi = ((double)calculated_pi * 4.0);
         printf("PI:%f\n", pi);
-        //if(scheduler->operationMode == 0){
-        update_pi_value(builder, pi);
-        //}
-        while(1){
+        if(scheduler->operationMode == 0){
             update_pi_value(builder, pi);
+        }
+        while(1){
         }
         exit(0);
     }
