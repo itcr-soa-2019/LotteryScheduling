@@ -1,7 +1,7 @@
 SOURCES=$(wildcard src/**/*.c src/*.c)
 EXECUTABLE=lottery
 TARGET=bin
-CFLAGS= -Wall -Wextra
+CFLAGS= 
 LDLIBS= `pkg-config --libs gtk+-3.0` 
 CPPFLAGS= `pkg-config --cflags gtk+-3.0`
 

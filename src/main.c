@@ -21,8 +21,12 @@ Proyecto 1: Lottery Scheduling */
 #include "scheduler/scheduler.h"
 #include "ui/ui_functions.h"
 
-void stub_reporter(double p){
-    printf("Thread progress %f \n", p);
+
+static gboolean
+update_progress_in_timeout (gpointer pbar)
+{
+    printf("Thread progress");
+    return TRUE;
 }
 
 /**
@@ -41,7 +45,7 @@ void piCalcTester(){
         thread-> id = i;
         task->thread = thread;
         task->workUnits = 4;
-        piCalculation(task, stub_reporter); //executeTask(task);
+        // piCalculation(taskm); //executeTask(task);
     }
     calculated_pi = 0;
     for(int x= 0; x< threadsNum; x++)
@@ -74,12 +78,14 @@ void schedulerTesterWorkingExample() {
 
     // start scheduling
     //initScheduler(1, 9, testList); // expropiative
-    initScheduler(0, 9, testList); //non-expropiative
+    //initScheduler(0, 9, testList); //non-expropiative
 }
 
 void schedulerTesterFromConfigFile() {
     //initialize config file
-    struct execution exeInfo = initializeExecution();    
+    struct execution exeInfo = initializeExecution();   
+    hideUnusedThreadsUI(exeInfo.numThreads); 
+    partialValues = calloc(sizeof(double),exeInfo.numThreads);
     printExecution();
 
     //create tasklist, threads and tasks
@@ -88,18 +94,41 @@ void schedulerTesterFromConfigFile() {
 
     //start scheduling
     int totalTickets = getTotalTickets();
-    initScheduler(exeInfo.operationMode, totalTickets, tasks); 
+    initScheduler(exeInfo.operationMode, totalTickets, exeInfo.numThreads, tasks); 
+}
+
+
+
+static gpointer
+worker (gpointer data)
+{
+   schedulerTesterFromConfigFile();
 }
 
 // Handler of the Start button clicked event
-void start_application() {    
-    piCalcTester();
-    printExecution();
+void start_application() {  
+    GThread    *thread;
+   // g_timeout_add (100, update_progress_in_timeout, NULL);
+    thread = g_thread_new ("worker", worker, NULL);
+    g_thread_unref (thread);
+    printf("Scheduling Done");
 }
+
+
+// After scheduler start then we need to hide threads that are not
+// going to be used
+void hideUnusedThreadsUI(long numThreads){
+    for(size_t i = numThreads; i < 12; i++)
+    { 
+        printf("Hide Thread: %ld", i);
+        hide_thread(builder, i);
+    }  
+    while (g_main_context_iteration(NULL, FALSE));
+}
+
 
 int initGtkUI(int argc, char **argv)
 {   
-    GtkBuilder *builder;
     GObject *window;
     GObject *button;
     GError *error = NULL;
@@ -122,40 +151,16 @@ int initGtkUI(int argc, char **argv)
     button = gtk_builder_get_object (builder, "start_scheduler");
     g_signal_connect (button, "clicked", G_CALLBACK (start_application), NULL);
 
-    // button = gtk_builder_get_object (builder, "button2");
-    // g_signal_connect (button, "clicked", G_CALLBACK (print_hello), NULL);
-
     button = gtk_builder_get_object (builder, "exit_application");
     g_signal_connect (button, "clicked", G_CALLBACK (gtk_main_quit), NULL);
-    GObject *progress2;
-    progress2 = gtk_builder_get_object(builder, "progress_2");
-
-        task_t *task = malloc(sizeof(task_t));
-        thread_t *thread = malloc(sizeof(thread_t));
-        thread->status->threadState = 1;
-        task->thread = thread;
-        task->workUnits = 4;
-        task->progress = 0.34;
-        update_thread(builder,task);
-       // piCalculation(task, stub_reporter); //executeTask(task);
-  
-    
-    // Sample hide some of the threads
-    for(size_t i = 6; i < 12; i++)
-    {
-        hide_thread(builder, i);
-    }  
-
-    gtk_main ();
+    gtk_main();
 }
-
 
 /**
  * Main execution method
  */
 int main(int argc, char **argv)
 {   
-    schedulerTesterFromConfigFile();
     //schedulerTesterWorkingExample(); //para que sirva, hay que comentar la creación de threads en initTaskList()
-    //initGtkUI(argc, argv);
+    initGtkUI(argc, argv);
 }

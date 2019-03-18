@@ -40,12 +40,15 @@ void deallocateCurrentTask() {
 }
 
 // Schedules a new task to be executed.
-// In expropiative mode, this method is triggered when the timer alarm completes. 
-void allocateNextTask() { 
-    
+// In expropiative mode, this method is triggered when the timer alarm completes.
+void allocateNextTask() {
+     printf("Task allocated");
     // check if progress is 100% and delete from task list
     if (scheduler->currentTask != NULL && scheduler->currentTask->progress == 1) {
         printf("Task COMPLETED-> %d.\n", scheduler->currentTask->thread->id);
+        if(scheduler->operationMode == 0){
+        update_thread(builder,scheduler->currentTask->thread->id,4,1.0);
+        }
         deallocateCurrentTask();
     }
 
@@ -55,21 +58,28 @@ void allocateNextTask() {
         if (scheduler->currentTask != NULL) {
             //printf("progress: %f, id: %d\n", scheduler->currentTask->progress, scheduler->currentTask->thread->id);
             printf("SAVE %p.\n", scheduler->currentTask->thread);
+            if(scheduler->operationMode == 0){
+                update_thread(builder,scheduler->currentTask->thread->id,0,scheduler->currentTask->progress);
+            }
             saveThread(scheduler->currentTask->thread);
-        } 
-    
+        }
+
         // 2. get winner ticket
         int winnerTicket = getWinnerTicket(scheduler->totalTickets);
-    
+
         // 3. find winner task in list and assign new current task
         scheduler->currentTask = getWinnerTask(scheduler->taskList, winnerTicket);
 
-        printf("Will now run Task-> %d.\n", scheduler->currentTask->thread->id);
-
+        if(scheduler->operationMode == 0){
+            printf("Will now run Task-> %d.\n", scheduler->currentTask->thread->id);
+            update_thread(builder,scheduler->currentTask->thread->id,1,scheduler->currentTask->progress);
+        }
+      
         // set new alarm for the selected current task
         if (scheduler->operationMode == 1) {
             setTimerAlarm(scheduler->currentTask->quantumSize);
         }
+
 
         // 4. resume thread to start its execution
         printf("RESUME %p.\n", scheduler->currentTask->thread);
@@ -77,18 +87,23 @@ void allocateNextTask() {
     } else {
         printf("No tasks left to schedule.\n");
 
-        for(int x= 0; x< 2; x++)
+        for(int x= 0; x < scheduler->totalThreads; x++)
         {
             calculated_pi += partialValues[x];
             printf("%f\n",partialValues[x]);
         }
-        printf("PI:%f\n", (double)calculated_pi * 4.0);
-
+        double pi = ((double)calculated_pi * 4.0);
+        printf("PI:%f\n", pi);
+        if(scheduler->operationMode == 0){
+            update_pi_value(builder, pi);
+        }
+        while(1){
+        }
         exit(0);
-    } 
+    }
 }
 
-// Used only for the non expropiative mode. 
+// Used only for the non expropiative mode.
 // Progress is updated for the current task by piCalc, every time a workunit is completed.
 void verifyCurrentThreadProgress(double progress){
     if (scheduler->operationMode == 0) {
@@ -96,7 +111,7 @@ void verifyCurrentThreadProgress(double progress){
         if (scheduler->currentTask->progress >= scheduler->currentTask->cpuYieldPercentage) { //el CPUYield percentage tiene que tomar en cuenta las diferentes iteraciones del progress, sino en la segunda siempre se va a cumplir esta condicion
             scheduler->currentTask->cpuYieldPercentage += scheduler->currentTask->thread->cpuYieldPercentage;
             allocateNextTask();
-        }   
+        }
     }
 }
 
@@ -107,7 +122,7 @@ void runThread() {
     }
 }
 
-void initScheduler(int operationMode, int totalTickets, task_list_t *taskList) {
+void initScheduler(int operationMode, int totalTickets, int numThreads, task_list_t *taskList) {
     scheduler = malloc(sizeof(scheduler_t));
     if (scheduler == NULL) {
         printf("Error while allocating memory for scheduler_t.");
@@ -116,6 +131,7 @@ void initScheduler(int operationMode, int totalTickets, task_list_t *taskList) {
     scheduler->operationMode = operationMode;
     scheduler->totalTickets = totalTickets;
     scheduler->taskList = taskList;
+    scheduler->totalThreads = numThreads;
     scheduler->currentTask = NULL;
 
     // init array of partial pi values
@@ -131,7 +147,7 @@ void initScheduler(int operationMode, int totalTickets, task_list_t *taskList) {
     allocateNextTask(); //to select the first task to run
 
     if (scheduler->operationMode == 1) {
-        //executeTasks(); 
+        //executeTasks();
     }
 
     printf("FINAAAAL");

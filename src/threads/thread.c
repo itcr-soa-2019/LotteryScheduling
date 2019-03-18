@@ -5,7 +5,7 @@
 #define JB_SP 6
 #define JB_PC 7
 
-unsigned int newId = 0;
+unsigned int newId = -1;
 
 
 // Translation required when using an address of a variable
